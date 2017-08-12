@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-"deploy": "pm2 deploy ecosystem.config.js production",
-"restart": "pm2 startOrRestart ecosystem.config.js"
+    "deploy": "pm2 deploy ecosystem.config.js production",
+    "restart": "pm2 startOrRestart ecosystem.config.js"
   },
   "repository": {
     "type": "git",
@@ -20,5 +20,8 @@
   "homepage": "https://github.com/tukuna30/test_aws#readme",
   "dependencies": {
     "express": "^4.15.4"
+  },
+  "devDependencies": {
+    "pm2": "^2.6.1"
   }
 }
