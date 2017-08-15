@@ -5,6 +5,8 @@ const path = require('path');
 const s3 = require('./s3');
 const fs = require('fs');
 
+let bodyParser = require('body-parser');
+app.use(bodyParser.json({limit: '100mb'}));
 app.use(fileUpload());
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 app.use(express.static(path.join(__dirname, 'public')));

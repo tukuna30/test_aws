@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "aws-sdk": "^2.97.0",
+    "body-parser": "^1.17.2",
     "express-fileupload": "^0.1.4",
     "pm2": "^2.6.1"
   }
