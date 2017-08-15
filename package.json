@@ -22,6 +22,8 @@
     "express": "^4.15.4"
   },
   "devDependencies": {
+    "aws-sdk": "^2.97.0",
+    "express-fileupload": "^0.1.4",
     "pm2": "^2.6.1"
   }
 }

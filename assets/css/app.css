@@ -1,16 +1,60 @@
+body#body {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    margin: 0;
+}
+#body .main-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  overflow: hidden;
+  margin: 10px 0 0 10px
+}
+
 div.images-container {
-  max-width: 1200px;
-  max-height: 600px;
+  max-width: 1060px;
+  max-height: 480px;
   overflow: auto;
   background: lightblue;
   border: 2px solid lightgray;
   border-radius: 5px;
   padding: 25px;
 }
+header {
+  height: 70px;
+  padding: 10px 0 0 0;
+}
 
 div.images-container img {
-  width: 550px;
+  width: 480px;
   border: 10px lightyellow solid;
   margin: 10px;
   border-radius: 5px;
+}
+
+label#file-upload {
+  cursor: pointer;
+  border: lightgray 1px solid;
+  padding: 7px;
+  background: lightblue;
+  border-radius: 3px;
+}
+
+label#file-upload input {
+  display: none;
+}
+
+footer {
+position: absolute;
+width: 100%;
+bottom: 0;
+z-index: 2;
+background: white;
+height: 20px;
+text-align: center
 }

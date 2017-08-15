@@ -4,12 +4,21 @@
     <title>Hi there!!!</title>
     <link rel="stylesheet" href="/assets/css/app.css" type='text/css'>
   </head>
-  <body>
-    <h3>Our lovely memories at Ladakh</h3>
+  <body id='body'>
+    <div class='main-container'>
+    <header id="header">
+      <label id='file-upload'>
+        <span>
+          <span>Upload new memories</span>
+          <input type='file' id='upload-input' accept="image/jpeg,image/gif,image/tiff,image/x-png" name='imageFiles'>
+       </span>
+      </label>
+      <h3>Our lovely memories at Ladakh</h3>
+    </header>
+
   <div class="images-container">
     <img src="https://s3.ap-south-1.amazonaws.com/test-bucket-tukuna/DSC_0507.JPG">
     <img src="https://s3.ap-south-1.amazonaws.com/test-bucket-tukuna/DSC_0700.JPG">
-    <img src="https://s3.ap-south-1.amazonaws.com/test-bucket-tukuna/DSC_2095.JPG">
     <img src="https://s3.ap-south-1.amazonaws.com/test-bucket-tukuna/DSC_0244.JPG">
     <img src="https://s3.ap-south-1.amazonaws.com/test-bucket-tukuna/DSC_0377.JPG">
     <img src="https://s3.ap-south-1.amazonaws.com/test-bucket-tukuna/DSC_0642.JPG">
@@ -25,6 +34,9 @@
     <img src="https://s3.ap-south-1.amazonaws.com/test-bucket-tukuna/DSC_0152.JPG">
     <img src="https://s3.ap-south-1.amazonaws.com/test-bucket-tukuna/DSC_2095.JPG">
   </div>
+
   <script async src="/assets/js/app.js"></script>
+  <footer id="footer">All rights not reserved yet ;)</footer>
+</div>
   </body>
 </html>
