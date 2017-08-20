@@ -19,7 +19,8 @@
   },
   "homepage": "https://github.com/tukuna30/test_aws#readme",
   "dependencies": {
-    "express": "^4.15.4"
+    "express": "^4.15.4",
+    "socketcluster-server": "^7.0.2"
   },
   "devDependencies": {
     "aws-sdk": "^2.97.0",
