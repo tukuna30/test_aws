@@ -1,4 +1,4 @@
-const s3 = require('../config_s3').s3;
+const s3 = require('../config/config_s3').s3;
 
 function createContainer(containerName) {
   containerName = containerName.trim();

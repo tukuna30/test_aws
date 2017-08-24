@@ -1,4 +1,4 @@
-const s3 = require('../config_s3').s3;
+const s3 = require('../config/config_s3').s3;
 
 function viewContainerData(containerName, bucketName) {
   var containerItemKey = encodeURIComponent(containerName) + '//';
