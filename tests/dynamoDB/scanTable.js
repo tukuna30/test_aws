@@ -8,8 +8,8 @@ var params = {
         "#yr": "year",
     },
     ExpressionAttributeValues: {
-         ":start_yr": 1950,
-         ":end_yr": 1959 
+        ":start_yr": 1950,
+        ":end_yr": 1959
     }
 };
 
@@ -22,8 +22,8 @@ function onScan(err, data) {
     } else {
         // print all the movies
         console.log("Scan succeeded.");
-        data.Items.forEach(function(movie) {
-           console.log(
+        data.Items.forEach(function (movie) {
+            console.log(
                 movie.year + ": ",
                 movie.title, "- rating:", movie.info.rating);
         });

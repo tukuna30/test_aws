@@ -6,19 +6,19 @@ var year = 2015;
 var title = "The Big New Movie";
 
 var params = {
-    TableName:table,
-    Key:{
-        "year":year,
-        "title":title
+    TableName: table,
+    Key: {
+        "year": year,
+        "title": title
     },
-    ConditionExpression:"info.rating <= :val",
+    ConditionExpression: "info.rating <= :val",
     ExpressionAttributeValues: {
         ":val": 5.0
     }
 };
 
 console.log("Attempting a conditional delete...");
-docClient.delete(params, function(err, data) {
+docClient.delete(params, function (err, data) {
     if (err) {
         console.error("Unable to delete item. Error JSON:", JSON.stringify(err, null, 2));
     } else {

@@ -2,7 +2,7 @@ const s3 = require('../config/config_s3').s3;
 
 function deleteItem(containerName, itemName) {
   let itemKey = encodeURIComponent(containerName) + '//' + itemName;
-  s3.deleteObject({Key: itemKey}, function(err, data) {
+  s3.deleteObject({ Key: itemKey }, function (err, data) {
     if (err) {
       console.log('There was an error deleting the item: ', err.message);
     }

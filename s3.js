@@ -1,14 +1,14 @@
 const s3 = require('./config/config_s3').s3;
 
-function uploadToS3 (file, callback) {
+function uploadFilesToContainer(file, callback) {
   // call S3 to retrieve upload file to specified bucket
-  let uploadParams = {Key: '', Body: ''};
+  let uploadParams = { Key: '', Body: '' };
 
   let fs = require('fs');
   let path = require('path');
 
   let fileStream = fs.createReadStream("./uploaded_files/" + file);
-  fileStream.on('error', function(err) {
+  fileStream.on('error', function (err) {
     console.log('File Error', err);
   });
   uploadParams.Body = fileStream;
@@ -17,10 +17,10 @@ function uploadToS3 (file, callback) {
   return s3.upload(uploadParams, function (err, data) {
     if (err) {
       console.log("Error", err);
-      callback({data: data, type: 'error'});
+      callback({ data: data, type: 'error' });
     } if (data) {
       console.log("Upload Success", data.Location);
-      callback({data: data, type: 'success'});
+      callback({ data: data, type: 'success' });
     }
   });
 }
@@ -36,53 +36,114 @@ function createContainer(containerName, callback) {
     return;
   }
   var containerKey = encodeURIComponent(containerName) + '/';
-  s3.headObject({Key: containerKey}, function(err, data) {
+  s3.headObject({ Key: containerKey }, function (err, data) {
     if (!err) {
       console.log('Container already exists.');
-      callback({data: data, type: 'error'});
+      callback({ data: data, type: 'error' });
       return;
     }
     if (err.code !== 'NotFound') {
       console.log('There was an error creating your container: ' + err.message);
-      callback({data: data, type: 'error'});
+      callback({ data: data, type: 'error' });
       return
     }
-    s3.putObject({Key: containerKey}, function(err, data) {
+    s3.putObject({ Key: containerKey }, function (err, data) {
       if (err) {
         console.log('There was an error creating your container: ' + err.message);
-        callback({data: data, type: 'error'});
+        callback({ data: data, type: 'error' });
       }
       console.log('Successfully created container.');
-      callback({data: data, type: 'success'});
+      callback({ data: data, type: 'success' });
     });
   });
 }
 
 function deleteContainer(containerName, callback) {
   var containerKey = encodeURIComponent(containerName) + '/';
-  s3.listObjects({Prefix: containerKey}, function(err, data) {
+  s3.listObjects({ Prefix: containerKey }, function (err, data) {
     if (err) {
       console.log('There was an error deleting your container: ', err.message);
-      callback({data: err, type: 'error'});
+      callback({ data: err, type: 'error' });
     }
-    var objects = data.Contents.map(function(object) {
-      return {Key: object.Key};
+    var objects = data.Contents.map(function (object) {
+      return { Key: object.Key };
     });
     s3.deleteObjects({
-      Delete: {Objects: objects, Quiet: true}
-    }, function(err, data) {
+      Delete: { Objects: objects, Quiet: true }
+    }, function (err, data) {
       if (err) {
         console.log('There was an error deleting your container: ', err.message);
-        callback({data: err, type: 'error'});
+        callback({ data: err, type: 'error' });
       }
       console.log('Successfully deleted container.');
-      callback({data: data, type: 'success'});
+      callback({ data: data, type: 'success' });
+    });
+  });
+}
+
+function viewContainerData(containerName, bucketName) {
+  var containerItemKey = encodeURIComponent(containerName) + '//';
+  return new Promise((resolve, reject) => {
+    s3.listObjects({ Prefix: containerItemKey }, function (err, data) {
+      if (err) {
+        console.log('There was an error viewing your container: ' + err.message);
+        reject(err);
+      }
+      // `this` references the AWS.Response instance that represents the response
+      var href = this.request.httpRequest.endpoint.href;
+      var bucketUrl = href + bucketName + '/';
+      console.log(data);
+      var items = data.Contents.map(function (item) {
+        var itemKey = item.Key;
+        var itemUrl = bucketUrl + encodeURIComponent(itemKey);
+        console.log(itemUrl);
+        console.log(itemKey);
+        return item;
+      });
+      resolve(items);
+    });
+  }
+  );
+}
+
+function listContainers() {
+  return new Promise((resolve, reject) => {
+    s3.listObjects({ Delimiter: '/' }, function (err, data) {
+      if (err) {
+        console.log('There was an error listing your containers: ' + err.message);
+        reject(err);
+      } else {
+        let containers = data.CommonPrefixes.map(function (commonPrefix) {
+          let prefix = commonPrefix.Prefix;
+          let containerName = decodeURIComponent(prefix.replace('/', ''));
+          return containerName;
+        });
+        console.log(containers);
+        resolve(containers);
+      }
+    });
+  });
+}
+
+function deleteFile(containerName, fileName) {
+  let itemKey = encodeURIComponent(containerName) + '//' + fileName;
+  return new Promise((resolve, reject) => {
+    s3.deleteObject({ Key: itemKey }, function (err, data) {
+      if (err) {
+        console.log('There was an error deleting the item: ', err.message);
+        reject(err);
+      }
+      console.log('Successfully deleted item.');
+      resolve();
     });
   });
 }
 
 exports.apis = {
-  uploadToS3: uploadToS3,
+  uploadFilesToContainer: uploadFilesToContainer,
   createContainer: createContainer,
-  deleteContainer: deleteContainer
+  deleteContainer: deleteContainer,
+  viewContainerData: viewContainerData,
+  listContainers: listContainers,
+  deleteFile: deleteFile
 };

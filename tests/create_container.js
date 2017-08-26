@@ -9,14 +9,14 @@ function createContainer(containerName) {
     console.log('container names cannot contain slashes.');
   }
   var containerKey = encodeURIComponent(containerName) + '/';
-  s3.headObject({Key: containerKey}, function(err, data) {
+  s3.headObject({ Key: containerKey }, function (err, data) {
     if (!err) {
       console.log('container already exists.');
     }
     if (err.code !== 'NotFound') {
       console.log('There was an error creating your container: ' + err.message);
     }
-    s3.putObject({Key: containerKey}, function(err, data) {
+    s3.putObject({ Key: containerKey }, function (err, data) {
       if (err) {
         console.log('There was an error creating your container: ' + err.message);
       }
