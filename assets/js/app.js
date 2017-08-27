@@ -1,16 +1,16 @@
-(function() {
+(function () {
   'use strict'
   var uploadInput = document.getElementById('upload-input');
   uploadInput.addEventListener("change", function (evt) {
     console.log(evt);
     var req = new XMLHttpRequest();
-    req.addEventListener("load", function reqListener () {
+    req.addEventListener("load", function reqListener() {
       console.log(this.responseText);
     });
 
     req.open("POST", "/upload");
 
-    req.upload.onprogress = function(e) {
+    req.upload.onprogress = function (e) {
       console.log('Tracking upload progress');
       if (e.lengthComputable) {
         var percentage = (e.loaded / e.total) * 100;
@@ -25,7 +25,7 @@
   }, false);
 
 
-  var socket = socketCluster.connect({port: 3000});
+  var socket = socketCluster.connect({ port: 3000 });
   socket.on('connect', function () {
     console.log('CONNECTED');
   });

@@ -2,12 +2,18 @@
 <head>
   <title>Hi there!!!</title>
   <link rel="stylesheet" href="/assets/css/app.css" type='text/css'>
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:500">
 </head>
 
 <body id='body'>
   <h1> Welcome to Things </h1>
 
-  <a href="/auth/facebook">Log In with Facebook</a>
-  <a href="/auth/google">Log In with Google</a>
+  <a id='fb-button-holder' href="/auth/facebook" class='third-party-logo-container'>
+    <img src='../assets/images/FB-fLogo-Blue-broadcast-2.png' class='logo'></img>
+    <span class='fb-logo-content'>Log In with Facebook</span></a>
+  <a href="/auth/google" id="google-button-holder" class='third-party-logo-container'>
+    <img src="../assets/svg/btn_google_dark_normal.svg" class='logo'></img>
+    <span class='google-logo-content'>Log In with Google</span></a>
+    <footer id="footer">All rights not reserved yet ;)</footer>    
 </body>
 </html>

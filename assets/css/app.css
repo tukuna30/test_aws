@@ -1,10 +1,11 @@
 body#body {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    margin: 0;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  margin: 0;
+  font-family: sans-serif;
 }
 #body .main-container {
   position: absolute;
@@ -49,12 +50,52 @@ label#file-upload input {
   display: none;
 }
 
+.third-party-logo-container {
+  color: #ffffff;
+  border-radius: 3px;
+  display: block;
+  width: 225px;
+  text-decoration: none;
+  padding: 0 8px 0 8px;
+  margin-bottom: 10px;
+  height: 38px;
+  padding: 0 8px 0 8px;
+}
+
+#fb-button-holder {
+  background-color: #4267B2;
+  border: 1px solid #4267B2;
+}
+.logo {
+  width: 25px;
+  margin: 5px;
+}
+.fb-logo-content {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 10px;
+  position: relative;
+  bottom: 12px;
+  font-family: sans-serif;
+}
+#google-button-holder {
+  background-color: #4285F4;
+  border: 1px solid #4285F4;
+}
+.google-logo-content {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 10px;
+  position: relative;
+  bottom: 12px;
+  font-family: Roboto;
+}
 footer {
-position: absolute;
-width: 100%;
-bottom: 0;
-z-index: 2;
-background: white;
-height: 20px;
-text-align: center
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  z-index: 2;
+  background: white;
+  height: 20px;
+  text-align: center
 }

@@ -25,7 +25,7 @@ let passport = require('passport'),
 app.use(bodyParser.json({ limit: '100mb' }));
 app.use(fileUpload());
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
-app.use(express.static(path.join(__dirname, 'public'), { index: 'login.html' }));
+//app.use(express.static(path.join(__dirname, 'public'), { index: 'login.html' }));
 app.use(session({ secret: 'testawssessionkey' }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -134,10 +134,15 @@ function isUserSignedIn(req, res, next) {
     next();
   } else {
     //next(new Error("Not signed in!"));
-    res.redirect('/');
+    //res.redirect('/');
+    res.sendFile('login.html', { root: __dirname + '/public/' });
   }
 }
 app.get('/app', isUserSignedIn, function (req, res) {
+  console.log('Authorised User ');
+  res.sendFile('index.html', { root: __dirname + '/app/' });
+});
+app.get('/', isUserSignedIn, function (req, res) {
   console.log('Authorised User ');
   res.sendFile('index.html', { root: __dirname + '/app/' });
 });
