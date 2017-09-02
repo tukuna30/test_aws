@@ -8,6 +8,21 @@ const fs = require('fs');
 let socketConnection = null;
 let http = require('http').Server(app);
 
+const file = './assets/js/app.js';
+fs.readFile(file, 'utf8', function (err, data) {
+  if (err) {
+    return console.error('Unable to open file: ', error);
+  }
+  if (data.indexOf('APP_BASE_URL') !== -1) {
+    var result = data.replace(/APP_BASE_URL/g, appConfig.baseUrl);
+    fs.writeFile(file, result, 'utf8', function (err) {
+      if (err) {
+        console.log('file write failed ' + err);
+      }
+    });
+  }
+});
+
 let socketClusterServer = require('socketcluster-server');
 let scServer = socketClusterServer.attach(http);
 
@@ -25,7 +40,6 @@ let passport = require('passport'),
 app.use(bodyParser.json({ limit: '100mb' }));
 app.use(fileUpload());
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
-//app.use(express.static(path.join(__dirname, 'public'), { index: 'login.html' }));
 app.use(session({ secret: 'testawssessionkey' }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -148,21 +162,21 @@ function isUserSignedIn(req, res, next) {
   } else {
     //next(new Error("Not signed in!"));
     //res.redirect('/');
-    res.sendFile('login.html', { root: __dirname + '/public/' });
+    res.sendFile('login.html', { root: __dirname + '/views/' });
   }
 }
 
 app.get('/app', isUserSignedIn, function (req, res) {
   console.log('Authorised User ');
-  res.sendFile('index.html', { root: __dirname + '/app/' });
+  res.sendFile('index.html', { root: __dirname + '/views/' });
 });
 
 app.get('/', isUserSignedIn, function (req, res) {
   console.log('Authorised User ');
-  res.sendFile('index.html', { root: __dirname + '/app/' });
+  res.sendFile('index.html', { root: __dirname + '/views/' });
 });
 
 app.get('/login', isUserSignedIn, function (req, res) {
   console.log('Authorised User ');
-  res.sendFile('index.html', { root: __dirname + '/app/' });
+  res.sendFile('index.html', { root: __dirname + '/views/' });
 });

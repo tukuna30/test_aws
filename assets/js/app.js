@@ -1,6 +1,4 @@
-(function () {
-  const appConfig = require('../../config/app_config').appConfig;
-  
+(function () {  
   var uploadInput = document.getElementById('upload-input');
   uploadInput.addEventListener("change", function (evt) {
     console.log(evt);
@@ -9,7 +7,7 @@
       console.log(this.responseText);
     });
 
-    req.open("POST", appConfig.baseUrl + "/upload");
+    req.open("POST", "APP_BASE_URL" + "/upload");
 
     req.upload.onprogress = function (e) {
       console.log('Tracking upload progress');
