@@ -7,6 +7,14 @@ body#body {
   margin: 0;
   font-family: sans-serif;
 }
+
+body.login {
+  background: lightgray;  
+}
+body a {
+  text-decoration: none;
+}
+
 #body .main-container {
   position: absolute;
   top: 0;
@@ -26,6 +34,7 @@ div.images-container {
   border-radius: 5px;
   padding: 25px;
 }
+
 header {
   height: 70px;
   padding: 10px 0 0 0;
@@ -55,7 +64,6 @@ label#file-upload input {
   border-radius: 3px;
   display: block;
   width: 225px;
-  text-decoration: none;
   padding: 0 8px 0 8px;
   margin-bottom: 10px;
   height: 38px;
@@ -98,4 +106,76 @@ footer {
   background: white;
   height: 20px;
   text-align: center
+}
+
+.popup-background {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 20px;
+  left: 0;
+  background-color: rgba(36,48,61,0.7);
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.popup-container {
+  z-index: 11;
+  background: white;
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  flex-flow: column;
+  padding: 10px;
+  border-radius: 3px;
+}
+
+.popup-container .message {
+  margin: 60px 0 20px 0;
+}
+
+.popup-container .message img {
+  width: 50px;
+  display: block;
+  margin-left: 30%;
+  margin-bottom: 20px;
+}
+
+.popup-background  {
+  background: url('../images/background_low.jpg') no-repeat;
+  background-size: 100% 100%;
+  animation: colorchange 12s 5 ease-in-out;
+}
+@keyframes colorchange
+{
+  0%   { 
+    background: url('../images/background_low.jpg') no-repeat;
+    background-size: 100% 100%;
+  }
+  25%  { 
+    background: url('../images/background1_low.jpg') no-repeat;
+    background-size: 100% 100%;
+  }
+  50%  { 
+    background: url('../images/background2_low.jpg') no-repeat;
+    background-size: 100% 100%;
+  }
+  75%  { 
+    background: url('../images/background3_low.jpg') no-repeat;
+    background-size: 100% 100%;
+  }
+  100%   { 
+    background: url('../images/background_low.jpg') no-repeat;
+    background-size: 100% 100%;
+  }
+}
+
+.profile {
+  position: relative;
+  left: 60.5%;
+  border: 1px solid lightgray;
+  border-radius: 2px;
+  padding: 5px;
+  background: lightblue;
 }

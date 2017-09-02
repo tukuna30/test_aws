@@ -1,5 +1,6 @@
 (function () {
-  'use strict'
+  const appConfig = require('../../config/app_config').appConfig;
+  
   var uploadInput = document.getElementById('upload-input');
   uploadInput.addEventListener("change", function (evt) {
     console.log(evt);
@@ -8,7 +9,7 @@
       console.log(this.responseText);
     });
 
-    req.open("POST", "/upload");
+    req.open("POST", appConfig.baseUrl + "/upload");
 
     req.upload.onprogress = function (e) {
       console.log('Tracking upload progress');
@@ -25,7 +26,7 @@
   }, false);
 
 
-  var socket = socketCluster.connect({ port: 3000 });
+  var socket = socketCluster.connect({ port: appConfig.PORT });
   socket.on('connect', function () {
     console.log('CONNECTED');
   });

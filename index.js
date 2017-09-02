@@ -3,9 +3,9 @@ const fileUpload = require('express-fileupload');
 const app = express();
 const path = require('path');
 const s3 = require('./s3');
+const appConfig = require('./config/app_config').appConfig;
 const fs = require('fs');
 let socketConnection = null;
-
 let http = require('http').Server(app);
 
 let socketClusterServer = require('socketcluster-server');
@@ -30,13 +30,13 @@ app.use(session({ secret: 'testawssessionkey' }));
 app.use(passport.initialize());
 app.use(passport.session());
 
-http.listen(3000, () => console.log('Server running on port 3000'));
+http.listen(appConfig.PORT, () => console.log('Server running on port ' + appConfig.PORT));
 
 //configure facebook login 
 passport.use(new FacebookStrategy({
   clientID: "218755845322867",
   clientSecret: "edd5e8b5407e803e3f0dfefdd1cde738",
-  callbackURL: "http://localhost:3000/auth/facebook/callback"
+  callbackURL: appConfig.baseUrl + "/auth/facebook/callback"
 },
   function (accessToken, refreshToken, profile, done) {
     console.log('success');
@@ -66,7 +66,7 @@ passport.deserializeUser(function (id, done) {
 passport.use(new GoogleStrategy({
   clientID: "10697359226-a1o961pp6e97e9hohck2n77pm50nmopd.apps.googleusercontent.com",
   clientSecret: "_MpeFAfYocuytfQSTjgVF3OG",
-  callbackURL: "http://localhost:3000/auth/google/callback"
+  callbackURL: appConfig.baseUrl + "/auth/google/callback"
 },
   function (accessToken, refreshToken, profile, done) {
     console.log('profile google ' + JSON.stringify(profile));
@@ -75,18 +75,22 @@ passport.use(new GoogleStrategy({
 ));
 
 //facebook routes
-app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['read_stream', 'publish_actions'] }));
+app.get('/auth/facebook',
+  passport.authenticate('facebook', {
+    scope: ['public_profile', 'email']
+  }));
 
 app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/login' }),
   function (req, res) {
     console.log('successfull facebook login')
-    // Successful authentication, redirect home. 
     res.redirect('/app');
   });
 
 //google routes
 app.get('/auth/google',
-  passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login'] }));
+  passport.authenticate('google', {
+    scope: ['https://www.googleapis.com/auth/plus.login']
+  }));
 
 app.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/login' }),
@@ -94,6 +98,14 @@ app.get('/auth/google/callback',
     console.log('successfull google login')
     res.redirect('/app');
   });
+
+app.get('/logout', function (req, res) {
+  req.session.destroy(function (e) {
+    console.log('destroying session for user ...');
+    req.logout();
+    res.redirect('/');
+  });
+});
 
 app.post('/upload', function handleUpload(req, response) {
   req.setTimeout(10 * 60 * 1000);
@@ -128,6 +140,7 @@ app.post('/upload', function handleUpload(req, response) {
     });
   });
 });
+
 function isUserSignedIn(req, res, next) {
   console.log(JSON.stringify(req.session));
   if (req.session.passport && req.session.passport.user) {
@@ -138,11 +151,18 @@ function isUserSignedIn(req, res, next) {
     res.sendFile('login.html', { root: __dirname + '/public/' });
   }
 }
+
 app.get('/app', isUserSignedIn, function (req, res) {
   console.log('Authorised User ');
   res.sendFile('index.html', { root: __dirname + '/app/' });
 });
+
 app.get('/', isUserSignedIn, function (req, res) {
+  console.log('Authorised User ');
+  res.sendFile('index.html', { root: __dirname + '/app/' });
+});
+
+app.get('/login', isUserSignedIn, function (req, res) {
   console.log('Authorised User ');
   res.sendFile('index.html', { root: __dirname + '/app/' });
 });
