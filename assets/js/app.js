@@ -24,7 +24,7 @@
   }, false);
 
 
-  var socket = socketCluster.connect({ port: appConfig.PORT });
+  var socket = socketCluster.connect({ port: 3000 });
   socket.on('connect', function () {
     console.log('CONNECTED');
   });
