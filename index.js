@@ -50,7 +50,7 @@ http.listen(appConfig.PORT, () => console.log('Server running on port ' + appCon
 passport.use(new FacebookStrategy({
   clientID: "218755845322867",
   clientSecret: "edd5e8b5407e803e3f0dfefdd1cde738",
-  callbackURL: appConfig.baseUrl + "/auth/facebook/callback"
+  callbackURL: appConfig.baseUrlWithoutPort + "/auth/facebook/callback"
 },
   function (accessToken, refreshToken, profile, done) {
     console.log('success');
@@ -80,7 +80,7 @@ passport.deserializeUser(function (id, done) {
 passport.use(new GoogleStrategy({
   clientID: "10697359226-a1o961pp6e97e9hohck2n77pm50nmopd.apps.googleusercontent.com",
   clientSecret: "_MpeFAfYocuytfQSTjgVF3OG",
-  callbackURL: appConfig.baseUrl + "/auth/google/callback"
+  callbackURL: appConfig.baseUrlWithoutPort + "/auth/google/callback"
 },
   function (accessToken, refreshToken, profile, done) {
     console.log('profile google ' + JSON.stringify(profile));
