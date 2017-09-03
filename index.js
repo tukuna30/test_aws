@@ -44,6 +44,13 @@ app.use(session({ secret: 'testawssessionkey' }));
 app.use(passport.initialize());
 app.use(passport.session());
 
+//CORS Config
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 http.listen(appConfig.PORT, () => console.log('Server running on port ' + appConfig.PORT));
 
 //configure facebook login 
