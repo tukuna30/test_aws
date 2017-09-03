@@ -55,9 +55,10 @@ http.listen(appConfig.PORT, () => console.log('Server running on port ' + appCon
 
 //configure facebook login 
 passport.use(new FacebookStrategy({
-  clientID: "218755845322867",
-  clientSecret: "edd5e8b5407e803e3f0dfefdd1cde738",
-  callbackURL: appConfig.baseUrlWithoutPort + "/auth/facebook/callback"
+  clientID: appConfig.facebookClientId,
+  clientSecret: appConfig.facebookSecret,
+  callbackURL: appConfig.baseUrlWithoutPort + "/auth/facebook/callback",
+  profileFields: ['id', 'emails', 'name']
 },
   function (accessToken, refreshToken, profile, done) {
     console.log('success');
@@ -85,9 +86,10 @@ passport.deserializeUser(function (id, done) {
 
 //setup google statergy
 passport.use(new GoogleStrategy({
-  clientID: "10697359226-a1o961pp6e97e9hohck2n77pm50nmopd.apps.googleusercontent.com",
-  clientSecret: "_MpeFAfYocuytfQSTjgVF3OG",
-  callbackURL: appConfig.baseUrlWithoutPort + "/auth/google/callback"
+  clientID: appConfig.googleClientId,
+  clientSecret: appConfig.googleSecret,
+  callbackURL: appConfig.baseUrlWithoutPort + "/auth/google/callback",
+  profileFields: ['id', 'emails', 'name']
 },
   function (accessToken, refreshToken, profile, done) {
     console.log('profile google ' + JSON.stringify(profile));
@@ -110,7 +112,7 @@ app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRe
 //google routes
 app.get('/auth/google',
   passport.authenticate('google', {
-    scope: ['https://www.googleapis.com/auth/plus.login']
+    scope: ['https://www.googleapis.com/auth/plus.login', 'https://www.googleapis.com/auth/plus.profile.emails.read']
   }));
 
 app.get('/auth/google/callback',
