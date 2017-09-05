@@ -5,8 +5,10 @@ const path = require('path');
 const s3 = require('./s3');
 const appConfig = require('./config/app_config').appConfig;
 const fs = require('fs');
-let socketConnection = null;
+const cookie = require('cookie');
+let socketConnectionStore = [];
 let http = require('http').Server(app);
+let User = require('./models/user').User;
 
 const file = './assets/js/app.js';
 fs.readFile(file, 'utf8', function (err, data) {
@@ -26,26 +28,22 @@ fs.readFile(file, 'utf8', function (err, data) {
 let socketClusterServer = require('socketcluster-server');
 let scServer = socketClusterServer.attach(http);
 
-scServer.on('connection', function (socket) {
-  console.log('a user connected');
-  socketConnection = socket;
-});
-
 let bodyParser = require('body-parser');
 let passport = require('passport'),
   session = require('express-session'),
   FacebookStrategy = require('passport-facebook').Strategy,
   GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+let sessionStore = new session.MemoryStore;
 
 app.use(bodyParser.json({ limit: '100mb' }));
 app.use(fileUpload());
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
-app.use(session({ secret: 'testawssessionkey' }));
+app.use(session({ store: sessionStore, secret: 'testawssessionkey', key: 'express.sid' }));
 app.use(passport.initialize());
 app.use(passport.session());
 
 //CORS Config
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "http://ec2-13-126-178-201.ap-south-1.compute.amazonaws.com");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
@@ -58,30 +56,60 @@ passport.use(new FacebookStrategy({
   clientID: appConfig.facebookClientId,
   clientSecret: appConfig.facebookSecret,
   callbackURL: appConfig.baseUrlWithoutPort + "/auth/facebook/callback",
-  profileFields: ['id', 'emails', 'name']
+  profileFields: ['id', 'emails', 'name', 'photos']
 },
   function (accessToken, refreshToken, profile, done) {
-    console.log('success');
-    // User.findOrCreate(..., function(err, user) {
-    //   if (err) { return done(err); }
-    //   done(null, user);
-    // });
-    console.log('profile facebook ' + JSON.stringify(profile));
-    done(null, profile);
+    User.findOrCreate(profile).then(function(user) {
+      done(null, user);
+    }, function(error) {
+      return done(error); 
+    });
   }
 ));
 
 passport.serializeUser(function (user, done) {
-  console.log('Serialize user done' + JSON.stringify(user));
-  done(null, user.id);
+  console.log('Serialize user done');
+  done(null, user);
 });
 
-passport.deserializeUser(function (id, done) {
-  console.log('Deserialize user is attempted' + id);
-  done(null, id);
-  // User.findById(id, function(err, user) {
-  //   done(err, user);
-  // });
+//before a socket is created get the authenticated user associated with it;
+scServer.addMiddleware(scServer.MIDDLEWARE_HANDSHAKE,
+  function (req, next) {
+    let sessionID = cookie.parse(req.headers.cookie)['express.sid'].split('.')[0].split(':')[1];
+    if (sessionID) {
+      sessionStore.get(sessionID, function (err, session) {
+        if (err || !session) {
+          console.log('unable to retrieve user socket from socket store:- ' + err);
+          console.log('safely destryoing session');
+          //TODO:- shall user session be destroyed?
+          next(err);
+        } else {
+          req.userId = session.passport ? session.passport.user.id : undefined;
+          next();
+        }
+      });
+    }
+  }
+);
+
+//after socket is created store it by associating to a user, to notify specific user
+scServer.on('connection', function (socket, data) {
+  let userId = socket.request.userId;
+  console.log('a user socket established for user: ' + userId);
+  if (userId) {
+    let userSocket = socketConnectionStore.find(function (socket) {
+      return socket.userId === userId;
+    });
+    if (userSocket) {
+      userSocket.socket = socket;
+    } else {
+      socketConnectionStore.push({ userId: socket.request.userId, socket: socket });      
+    }
+  }
+});
+
+passport.deserializeUser(function (user, done) {
+  done(null, user);
 });
 
 //setup google statergy
@@ -89,11 +117,14 @@ passport.use(new GoogleStrategy({
   clientID: appConfig.googleClientId,
   clientSecret: appConfig.googleSecret,
   callbackURL: appConfig.baseUrlWithoutPort + "/auth/google/callback",
-  profileFields: ['id', 'emails', 'name']
+  profileFields: ['id', 'emails', 'name', 'photos']
 },
   function (accessToken, refreshToken, profile, done) {
-    console.log('profile google ' + JSON.stringify(profile));
-    done(null, profile);
+    User.findOrCreate(profile).then(function(user) {
+      done(null, user);
+    }, function(error) {
+      return done(error); 
+    });
   }
 ));
 
@@ -123,6 +154,16 @@ app.get('/auth/google/callback',
   });
 
 app.get('/logout', function (req, res) {
+  let userSocket = socketConnectionStore.find(function (socket) {
+    return socket.userId === req.session.passport.user.id;
+  });
+  if (userSocket) {
+    let index = socketConnectionStore.indexOf(userSocket);
+    if (index > -1) {
+      socketConnectionStore.splice(index, 1);
+    }
+  }
+
   req.session.destroy(function (e) {
     console.log('destroying session for user ...');
     req.logout();
@@ -132,6 +173,10 @@ app.get('/logout', function (req, res) {
 
 app.post('/upload', function handleUpload(req, response) {
   req.setTimeout(10 * 60 * 1000);
+  let userSocket = socketConnectionStore.find(function (socket) {
+    return socket.userId === req.session.passport.user.id;
+  });
+
   if (!req.files) {
     return response.status(400).send('No files were uploaded.');
   }
@@ -159,13 +204,15 @@ app.post('/upload', function handleUpload(req, response) {
     awsUpload.on('httpUploadProgress', function (progress) {
       let progressVal = progress.loaded / progress.total * 100;
       console.log('Upload progress:- ' + progressVal + '%');
-      socketConnection.emit('fileUploadProgress', progressVal);
+     
+      if (userSocket && userSocket.socket) {
+        userSocket.socket.emit('fileUploadProgress', progressVal);
+      }
     });
   });
 });
 
 function isUserSignedIn(req, res, next) {
-  console.log(JSON.stringify(req.session));
   if (req.session.passport && req.session.passport.user) {
     next();
   } else {
@@ -176,16 +223,13 @@ function isUserSignedIn(req, res, next) {
 }
 
 app.get('/app', isUserSignedIn, function (req, res) {
-  console.log('Authorised User ');
   res.sendFile('index.html', { root: __dirname + '/views/' });
 });
 
 app.get('/', isUserSignedIn, function (req, res) {
-  console.log('Authorised User ');
   res.sendFile('index.html', { root: __dirname + '/views/' });
 });
 
 app.get('/login', isUserSignedIn, function (req, res) {
-  console.log('Authorised User ');
   res.sendFile('index.html', { root: __dirname + '/views/' });
 });
