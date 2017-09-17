@@ -46,6 +46,13 @@
   var socket = socketCluster.connect({ port: 3000 });
   socket.on('connect', function () {
     console.log('CONNECTED');
+
+    let req = new XMLHttpRequest();
+    req.open("POST", "APP_BASE_URL" + "/createUserSpace");
+    req.send({});
+    setTimeout(function() {
+      showUserData();
+    }, 10000);
   });
   socket.on('fileUploadProgress', (data) => {
     console.log('File upload to server progress:- ' + data + '%');
@@ -69,10 +76,4 @@
   //     alert('Enter a name please!');
   //   }
   // });
-
-  let req = new XMLHttpRequest();
-  req.open("POST", "APP_BASE_URL" + "/createUserSpace");
-  req.send({});
-
-  showUserData();
 })();
