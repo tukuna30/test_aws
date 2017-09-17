@@ -9,8 +9,8 @@ let createUser = function (profile) {
             "provider": profile.provider,
             "name": profile.name,
             "displayName": profile.name.givenName + ' ' + profile.name.familyName,
-            "email": profile.emails ? profile.emails[0].value : "",
-            "photoUrl": profile.photos ? profile.photos[0].value : ""
+            "email": profile.emails ? profile.emails[0].value : "NA",
+            "photoUrl": profile.photos ? profile.photos[0].value : "NA"
         }
     }
     return dynamoDb.apis.insertRecord(params);
