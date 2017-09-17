@@ -32,18 +32,18 @@ function uploadFilesToContainer(file, userSpace, callback) {
 function createContainer(containerName, callback) {
   containerName = containerName.trim();
   if (!containerName) {
-    console.log('Container names must contain at least one non-space character.');
+    callback({ data: 'Container names must contain at least one non-space character', type: 'error' });
     return;
   }
   if (containerName.indexOf('/') !== -1) {
-    console.log('Container names cannot contain slashes.');
+    callback({data: 'Container names cannot contain slashes.', type: 'error'});
     return;
   }
   var containerKey = encodeURIComponent(containerName) + '/';
   s3.headObject({ Key: containerKey }, function (err, data) {
     if (!err) {
       console.log('Container already exists.');
-      callback({ data: data, type: 'error' });
+      callback({ data: data, type: 'warning' });
       return;
     }
     if (err.code !== 'NotFound') {
@@ -96,7 +96,6 @@ function viewContainerData(containerName, bucketName) {
       // `this` references the AWS.Response instance that represents the response
       var href = this.request.httpRequest.endpoint.href;
       var bucketUrl = href + bucketName + '/';
-      console.log(data);
       var items = data.Contents.reduce(function(result, item) {
         if (item.Key !== containerItemKey) { 
           item.itemUrl = bucketUrl + encodeURIComponent(item.Key);

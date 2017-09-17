@@ -17,18 +17,20 @@
           </label> -->
       <label id='file-upload'>
         <span>
-          <span>Upload new memories</span>
+          <span>Upload your memories</span>
           <input type='file' id='upload-input' accept="image/jpeg,image/gif,image/tiff,image/x-png" name='imageFiles'>
         </span>
       </label>
       <span class='profile'><a href="/logout">Log out</a></span>      
     </header>
-    <h3>Your photos</h2>
-      <div id="user-items" class="images-container">
+    <h3 class='h3'>Your photos</h3>
+    <div id='upload-progress' class="progress-bar-outer">
+        <div class="progress-bar-inner"></div>
     </div>
+    <div id="user-items" class="images-container"></div>
 
-    <h3>Photos available</h2>
-    <h4>Memorable Ladakh</h3>
+    <h3>Photos available</h3>
+    <h4>Memorable Ladakh</h4>
     <div class="images-container">
       <img src="https://s3.ap-south-1.amazonaws.com/test-bucket-tukuna/DSC_0648.JPG">
       <img src="https://s3.ap-south-1.amazonaws.com/test-bucket-tukuna/DSC_0871.JPG">

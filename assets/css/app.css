@@ -192,3 +192,27 @@ footer {
   width: 200px;
   height: auto;
 }
+
+#upload-progress.progress-bar-outer {
+  background: lightgray;
+  height: 22px;
+  border-radius: 3px;
+  width: 150px;
+  display: none;
+}
+#upload-progress .progress-bar-inner {
+  background: green;
+  height: 20px;
+  border-radius: 3px;
+  color: white;
+  font-size: 15px;
+  padding-top: 2px;
+}
+#upload-progress.progress-bar-outer.show {
+  display: inline-block;
+}
+.h3 {
+  width: 120px;
+  display: inline-block;
+  margin: 10px 0;
+}

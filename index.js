@@ -61,10 +61,10 @@ passport.use(new FacebookStrategy({
 },
   function (accessToken, refreshToken, profile, done) {
     console.log('Facebook profile' + JSON.stringify(profile));
-    User.findOrCreate(profile).then(function(user) {
+    User.findOrCreate(profile).then(function (user) {
       done(null, user);
-    }, function(error) {
-      return done(error); 
+    }, function (error) {
+      return done(error);
     });
   }
 ));
@@ -105,7 +105,7 @@ scServer.on('connection', function (socket, data) {
     if (userSocket) {
       userSocket.socket = socket;
     } else {
-      socketConnectionStore.push({ userId: socket.request.userId, socket: socket });      
+      socketConnectionStore.push({ userId: socket.request.userId, socket: socket });
     }
   }
 });
@@ -122,10 +122,10 @@ passport.use(new GoogleStrategy({
   profileFields: ['id', 'emails', 'name', 'photos']
 },
   function (accessToken, refreshToken, profile, done) {
-    User.findOrCreate(profile).then(function(user) {
+    User.findOrCreate(profile).then(function (user) {
       done(null, user);
-    }, function(error) {
-      return done(error); 
+    }, function (error) {
+      return done(error);
     });
   }
 ));
@@ -173,7 +173,21 @@ app.get('/logout', function (req, res) {
   });
 });
 
-app.post('/upload', function handleUpload(req, response) {
+function validateUpload (req, res, next) {
+  let user = req.session.passport.user;
+  let userId = user.id;
+  let userSpace = user.displayName ? user.displayName + "_" + userId : userId;
+
+  s3.apis.viewContainerData(userSpace, 'test-bucket-tukuna').then(function (response) {
+    if (response.data.containerSize/1048576 < 220 ){
+      next();
+    } else {
+      return res.status(200).send({data: 'Consumed your free space. Time to buy more space!!!', type: 'error'});
+    }
+  });
+}
+
+app.post('/upload', validateUpload, function handleUpload(req, response) {
   let user = req.session.passport.user;
   req.setTimeout(10 * 60 * 1000);
   let userSocket = socketConnectionStore.find(function (socket) {
@@ -207,7 +221,7 @@ app.post('/upload', function handleUpload(req, response) {
     awsUpload.on('httpUploadProgress', function (progress) {
       let progressVal = progress.loaded / progress.total * 100;
       console.log('Upload progress:- ' + progressVal + '%');
-     
+
       if (userSocket && userSocket.socket) {
         userSocket.socket.emit('fileUploadProgress', progressVal);
       }
@@ -215,31 +229,35 @@ app.post('/upload', function handleUpload(req, response) {
   });
 });
 
-app.post('/createUserSpace', function(req, res) {
-    let user = req.session.passport.user;
-    let userId = user.id;
-    let userSpace = user.displayName ? user.displayName + "_" + userId : userId; 
-    s3.apis.createContainer(userSpace, function(response) {
-      if (response.type === 'error') {
-        return res.status(500).send(response.data);
-      } else {
-        return res.status(200).send(response.data);
-      }
-    });
-});
-
-app.get('/userData', function(req, res) {
+app.post('/createUserSpace', function (req, res) {
   let user = req.session.passport.user;
   let userId = user.id;
-  let userSpace = user.displayName ? user.displayName + "_" + userId : userId; 
-  
-  s3.apis.viewContainerData(userSpace, 'test-bucket-tukuna').then(function(response) {
+  let userSpace = user.displayName ? user.displayName + "_" + userId : userId;
+  s3.apis.createContainer(userSpace, function (response) {
+    if (response.type === 'error') {
+      return res.status(500).send(response.data);
+    }
+    else if (response.type === 'warning') {
+      return res.status(200).send(response.data);
+    }
+    else {
+      return res.status(200).send(response.data);
+    }
+  });
+});
+
+app.get('/userData', function (req, res) {
+  let user = req.session.passport.user;
+  let userId = user.id;
+  let userSpace = user.displayName ? user.displayName + "_" + userId : userId;
+
+  s3.apis.viewContainerData(userSpace, 'test-bucket-tukuna').then(function (response) {
     if (response.type === 'error') {
       return res.status(500).send(response.data);
     } else {
       return res.status(200).send(response.data);
     }
-  }, function(){
+  }, function () {
     return res.status(500).send(response.data);
   });
 });
