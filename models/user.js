@@ -21,15 +21,17 @@ User.findOrCreate = function (userProfile) {
     return new Promise((resolve, reject) => {
         dynamoDb.apis.readRecord({ TableName: tableName, Key: { "id": userProfile.id, "provider": userProfile.provider } }).then(function (profileData) {
             let profile = profileData.Item;
-            if (profile.id) {
-                resolve(profile);
-            }
+            console.log('profileData ')
+            console.log(JSON.stringify(profileData));
             if (!profile || !profile.id) {
                 console.log('Storing a user ');
                 createUser(userProfile).then(function (data) {
                     console.log('User data from db ' + JSON.stringify(data));
                     resolve(userProfile);
                 });
+            }
+            if (profile.id) {
+                resolve(profile);
             }
         }, function (error) {
             createUser(userProfile).then(function (data) {
