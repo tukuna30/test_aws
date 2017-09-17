@@ -1,13 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Hi there!!!</title>
+  <title>Try Things!!!</title>
   <link rel="stylesheet" href="/assets/css/app.css" type='text/css'>
   <link rel="icon" href="/assets/images/favicon.png" type="image/png">  
 </head>
 <body id='body'>
   <div class='main-container'>
     <header id="header">
+        <!-- <label>
+            <span>
+              <span>Create your own space</span>
+              <input type='input' id='user-space-input' name='user-space-input'>
+              <button id='create-user-space'></button>
+            </span>
+          </label> -->
       <label id='file-upload'>
         <span>
           <span>Upload new memories</span>
@@ -15,8 +22,13 @@
         </span>
       </label>
       <span class='profile'><a href="/logout">Log out</a></span>      
-      <h3>Memorable Ladakh</h3>
     </header>
+    <h3>Your photos</h2>
+      <div id="user-items" class="images-container">
+    </div>
+
+    <h3>Photos available</h2>
+    <h4>Memorable Ladakh</h3>
     <div class="images-container">
       <img src="https://s3.ap-south-1.amazonaws.com/test-bucket-tukuna/DSC_0648.JPG">
       <img src="https://s3.ap-south-1.amazonaws.com/test-bucket-tukuna/DSC_0871.JPG">
@@ -24,8 +36,6 @@
       <img src="https://s3.ap-south-1.amazonaws.com/test-bucket-tukuna/DSC_1386.JPG">
       <img src="https://s3.ap-south-1.amazonaws.com/test-bucket-tukuna/DSC_1388.JPG">
       <img src="https://s3.ap-south-1.amazonaws.com/test-bucket-tukuna/DSC_1402.JPG">
-      <img src="https://s3.ap-south-1.amazonaws.com/test-bucket-tukuna/DSC_1455.JPG">
-      <img src="https://s3.ap-south-1.amazonaws.com/test-bucket-tukuna/DSC_1466.JPG">
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socketcluster-client/7.0.1/socketcluster.js"></script>

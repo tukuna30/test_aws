@@ -172,9 +172,10 @@ app.get('/logout', function (req, res) {
 });
 
 app.post('/upload', function handleUpload(req, response) {
+  let user = req.session.passport.user;
   req.setTimeout(10 * 60 * 1000);
   let userSocket = socketConnectionStore.find(function (socket) {
-    return socket.userId === req.session.passport.user.id;
+    return socket.userId === user.id;
   });
 
   if (!req.files) {
@@ -186,8 +187,8 @@ app.post('/upload', function handleUpload(req, response) {
   file.mv("./uploaded_files/" + file.name, function (err) {
     if (err)
       return res.status(500).send(err);
-
-    let awsUpload = s3.apis.uploadFilesToContainer(file.name, function (uploadStatus) {
+    let userSpace = user.displayName ? user.displayName + "_" + user.id : user.id;
+    let awsUpload = s3.apis.uploadFilesToContainer(file.name, userSpace, function (uploadStatus) {
       if (uploadStatus.type === 'error') {
         return response.status(400).send(uploadStatus.data);
       }
@@ -209,6 +210,35 @@ app.post('/upload', function handleUpload(req, response) {
         userSocket.socket.emit('fileUploadProgress', progressVal);
       }
     });
+  });
+});
+
+app.post('/createUserSpace', function(req, res) {
+    let user = req.session.passport.user;
+    let userId = user.id;
+    let userSpace = user.displayName ? user.displayName + "_" + userId : userId; 
+    s3.apis.createContainer(userSpace, function(response) {
+      if (response.type === 'error') {
+        return res.status(500).send(response.data);
+      } else {
+        return res.status(200).send(response.data);
+      }
+    });
+});
+
+app.get('/userData', function(req, res) {
+  let user = req.session.passport.user;
+  let userId = user.id;
+  let userSpace = user.displayName ? user.displayName + "_" + userId : userId; 
+  
+  s3.apis.viewContainerData(userSpace, 'test-bucket-tukuna').then(function(response) {
+    if (response.type === 'error') {
+      return res.status(500).send(response.data);
+    } else {
+      return res.status(200).send(response.data);
+    }
+  }, function(){
+    return res.status(500).send(response.data);
   });
 });
 

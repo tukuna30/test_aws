@@ -1,6 +1,6 @@
 const s3 = require('./config/config_s3').s3;
 
-function uploadFilesToContainer(file, callback) {
+function uploadFilesToContainer(file, userSpace, callback) {
   // call S3 to retrieve upload file to specified bucket
   let uploadParams = { Key: '', Body: '' };
 
@@ -11,8 +11,12 @@ function uploadFilesToContainer(file, callback) {
   fileStream.on('error', function (err) {
     console.log('File Error', err);
   });
+  let filePath = path.basename(file);
+  if (userSpace) {
+    filePath = encodeURIComponent(userSpace) + '/' + filePath;
+  }
   uploadParams.Body = fileStream;
-  uploadParams.Key = path.basename(file);
+  uploadParams.Key = filePath;
 
   return s3.upload(uploadParams, function (err, data) {
     if (err) {
@@ -82,25 +86,26 @@ function deleteContainer(containerName, callback) {
 }
 
 function viewContainerData(containerName, bucketName) {
-  var containerItemKey = encodeURIComponent(containerName) + '//';
+  var containerItemKey = encodeURIComponent(containerName) + '/';
   return new Promise((resolve, reject) => {
     s3.listObjects({ Prefix: containerItemKey }, function (err, data) {
       if (err) {
         console.log('There was an error viewing your container: ' + err.message);
-        reject(err);
+        reject({data: err, type: 'error'});
       }
       // `this` references the AWS.Response instance that represents the response
       var href = this.request.httpRequest.endpoint.href;
       var bucketUrl = href + bucketName + '/';
       console.log(data);
-      var items = data.Contents.map(function (item) {
-        var itemKey = item.Key;
-        var itemUrl = bucketUrl + encodeURIComponent(itemKey);
-        console.log(itemUrl);
-        console.log(itemKey);
-        return item;
-      });
-      resolve(items);
+      var items = data.Contents.reduce(function(result, item) {
+        if (item.Key !== containerItemKey) { 
+          item.itemUrl = bucketUrl + encodeURIComponent(item.Key);
+          result.totalSize = (result.totalSize ? result.totalSize : 0 ) + item.Size;
+          result.push(item);
+        } 
+        return result;
+      }, []);
+      resolve({data: {containerId: containerName, containerSize: items.totalSize, items: items}, type: 'success'});
     });
   }
   );

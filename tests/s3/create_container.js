@@ -1,4 +1,4 @@
-const s3 = require('../config/config_s3').s3;
+const s3 = require('../../config/config_s3').s3;
 
 function createContainer(containerName) {
   containerName = containerName.trim();
@@ -12,9 +12,11 @@ function createContainer(containerName) {
   s3.headObject({ Key: containerKey }, function (err, data) {
     if (!err) {
       console.log('container already exists.');
+      return;
     }
     if (err.code !== 'NotFound') {
       console.log('There was an error creating your container: ' + err.message);
+      return
     }
     s3.putObject({ Key: containerKey }, function (err, data) {
       if (err) {

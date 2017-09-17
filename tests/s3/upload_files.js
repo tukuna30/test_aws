@@ -1,4 +1,4 @@
-const s3 = require('../config/config_s3').s3;
+const s3 = require('../../config/config_s3').s3;
 
 // call S3 to retrieve upload file to specified bucket
 var uploadParams = { Key: '', Body: '' };

@@ -1,4 +1,4 @@
-const s3 = require('../config/config_s3').s3;
+const s3 = require('../../config/config_s3').s3;
 
 function deleteContainer(containerName) {
   var containerKey = encodeURIComponent(containerName) + '/';
