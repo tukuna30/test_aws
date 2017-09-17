@@ -59,6 +59,7 @@ passport.use(new FacebookStrategy({
   profileFields: ['id', 'emails', 'name', 'photos']
 },
   function (accessToken, refreshToken, profile, done) {
+    console.log('Facebook profile' + JSON.stringify(profile));
     User.findOrCreate(profile).then(function(user) {
       done(null, user);
     }, function(error) {

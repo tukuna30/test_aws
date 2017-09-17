@@ -29,6 +29,7 @@ User.findOrCreate = function (userProfile) {
                     console.log('User data from db ' + JSON.stringify(data));
                     resolve(userProfile);
                 });
+                return;
             }
             if (profile.id) {
                 resolve(profile);
