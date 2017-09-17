@@ -2,6 +2,7 @@
   function showUserData() {
     let xhr = new XMLHttpRequest();
     xhr.open("GET", "APP_BASE_URL" + "/userData");
+    xhr.withCredentials = true;
     xhr.send({});
     xhr.addEventListener("load", function reqListener() {
       if (xhr.readyState === xhr.DONE) {
@@ -27,6 +28,7 @@
     });
 
     req.open("POST", "APP_BASE_URL" + "/upload");
+    req.withCredentials = true;
 
     req.upload.onprogress = function (e) {
       console.log('Tracking upload progress');
@@ -49,6 +51,7 @@
 
     let req = new XMLHttpRequest();
     req.open("POST", "APP_BASE_URL" + "/createUserSpace");
+    req.withCredentials = true;
     req.send({});
     setTimeout(function() {
       showUserData();
