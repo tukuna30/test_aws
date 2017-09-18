@@ -18,7 +18,7 @@ function uploadFilesToContainer(file, userSpace, callback) {
   uploadParams.Body = fileStream;
   uploadParams.Key = filePath;
 
-  return s3.upload(uploadParams, function (err, data) {
+  return s3.upload(uploadParams, {partSize: 5 * 1024 * 1024, queueSize: 1}, function (err, data) {
     if (err) {
       console.log("Error", err);
       callback({ data: data, type: 'error' });

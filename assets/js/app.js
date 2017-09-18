@@ -1,4 +1,21 @@
 (function () {
+  function clearNotification() {
+    document.querySelector('#notification').classList.remove('show');
+    document.querySelector('#notification').classList.remove('error');
+    document.querySelector('#notification').classList.remove('success');
+    document.querySelector('#notification').classList.remove('warning');
+  }
+  function showNotification(message, type) {
+    clearNotification()
+    document.querySelector('#notification').classList.add(type);
+    document.querySelector('#notification .message').innerHTML = message;
+    document.querySelector('#notification').classList.add('show');
+
+    setTimeout(function () {
+      clearNotification();
+    }, 10000);
+  }
+
   function showUserData() {
     let xhr = new XMLHttpRequest();
     xhr.open("GET", "APP_BASE_URL" + "/userData" + '?time=' + Date.now());
@@ -23,8 +40,8 @@
     if (evt.target.files.length === 0) {
       return;
     }
-    if (evt.target.files[0].size/1048576 > 100) {
-      console.log('Files bigger than 100MB are not allowed!!!');
+    if (evt.target.files[0].size / 1048576 > 100) {
+      showNotification('Files bigger than 100MB are not allowed!!!', 'error');
       return;
     }
     document.getElementById("upload-input").disabled = true;
@@ -33,12 +50,14 @@
       if (req.readyState === req.DONE) {
         if (req.status === 200) {
           let uploadStatus = JSON.parse(req.response);
-          console.log('File stored at ' + uploadStatus.Location);
           document.querySelector('#upload-progress.progress-bar-outer').classList.remove('show');
           document.getElementById("upload-input").disabled = false;
-          
+          if(uploadStatus.type === 'error') {
+            showNotification(uploadStatus.data, 'error');
+          }
           if (uploadStatus.Location) {
-            showUserData();            
+            showNotification('File upload success!!!', 'success');
+            showUserData();
           }
         }
       }
@@ -48,7 +67,6 @@
     req.withCredentials = true;
 
     req.upload.onprogress = function (e) {
-      console.log('Tracking upload progress');
       if (e.lengthComputable) {
         var percentage = (e.loaded / e.total) * 100;
         console.log('File upload status from browser:- ' + percentage);
@@ -83,9 +101,7 @@
     document.querySelector('#upload-progress .progress-bar-inner').innerHTML = progress;
     document.querySelector('#upload-progress .progress-bar-inner').style.width = progress;
     if (progress === '100%') {
-      setTimeout(function() {
-        document.querySelector('#upload-progress .progress-bar-inner').innerHTML = 'Saving...';      
-      }, 1000);
+      document.querySelector('#upload-progress .progress-bar-inner').innerHTML = '100% Saving...';
     }
   });
 
@@ -94,7 +110,7 @@
   //   userSpace = document.getElementById('user-space-input').value;
   //   if (userSpace) {
   //     var req = new XMLHttpRequest();
-  //     req.open("POST", "http://localhost:3000" + "/createUserSpace");
+  //     req.open("POST", "APP_BASE_URL" + "/createUserSpace");
   //     const formData = new FormData();
   //     formData.append("userSpaceName", userSpace);
   //     req.send(formData);
@@ -102,4 +118,14 @@
   //     alert('Enter a name please!');
   //   }
   // });
+  document.querySelector('#notification .close').addEventListener('click', function (evt) {
+    document.querySelector('#notification').classList.remove('show');
+  });
+
+  document.querySelector('.user-profile img').src = window.trythings.currentUser.photoUrl;
+  document.querySelector('.user-profile .name').innerHTML = window.trythings.currentUser.displayName;
+
+  document.querySelector('.user-profile img').addEventListener('click', function (event) {
+    document.querySelector('.user-profile').classList.toggle('show');
+  });
 })();

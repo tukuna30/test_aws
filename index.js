@@ -25,6 +25,24 @@ fs.readFile(file, 'utf8', function (err, data) {
   }
 });
 
+function setCurrentUser(user) {
+  let pattern = '__INJECT_GLOBAL_HERE__', file = "./views/index.html";
+  let userString = "window.trythings.currentUser=" + JSON.stringify(user);
+  fs.readFileSync(file, 'utf8', function (err, data) {
+    if (err) {
+      return console.error('Unable to open file: ', error);
+    }
+    if (data.indexOf(pattern) !== -1) {
+      var result = data.replace(pattern, userString);
+      fs.writeFileSync(file, result, 'utf8', function (err) {
+        if (err) {
+          console.log('file write failed ' + err);
+        }
+      });
+    }
+  });
+}
+
 let socketClusterServer = require('socketcluster-server');
 let scServer = socketClusterServer.attach(http);
 
@@ -173,16 +191,16 @@ app.get('/logout', function (req, res) {
   });
 });
 
-function validateUpload (req, res, next) {
+function validateUpload(req, res, next) {
   let user = req.session.passport.user;
   let userId = user.id;
   let userSpace = user.displayName ? user.displayName + "_" + userId : userId;
 
   s3.apis.viewContainerData(userSpace, 'test-bucket-tukuna').then(function (response) {
-    if (response.data.containerSize/1048576 < 220 ){
+    if (response.data.containerSize / 1048576 < 500) {
       next();
     } else {
-      return res.status(200).send({data: 'Consumed your free space. Time to buy more space!!!', type: 'error'});
+      return res.status(200).send({ data: 'Consumed your free space. Time to buy more space!!!', type: 'error' });
     }
   });
 }
@@ -264,7 +282,22 @@ app.get('/userData', function (req, res) {
 
 function isUserSignedIn(req, res, next) {
   if (req.session.passport && req.session.passport.user) {
-    next();
+    let pattern = '__INJECT_GLOBAL_HERE__', file = "./views/index.html";
+    let userString = "window.trythings.currentUser=" + JSON.stringify(req.session.passport.user);
+    console.log('reading index.html');
+    fs.readFile(file, 'utf8', function (err, data) {
+      if (err) {
+        console.error('Unable to open file: ', error);
+        res.sendFile('index.html', { root: __dirname + '/views/' });
+        return;
+      }
+      let content = data.replace(pattern, userString);
+      res.writeHead(200, {
+        'Content-Type': 'text/html'
+      });
+      res.write(content);
+      res.end();
+    });
   } else {
     //next(new Error("Not signed in!"));
     //res.redirect('/');
@@ -273,13 +306,13 @@ function isUserSignedIn(req, res, next) {
 }
 
 app.get('/app', isUserSignedIn, function (req, res) {
-  res.sendFile('index.html', { root: __dirname + '/views/' });
+  //res.sendFile('index.html', { root: __dirname + '/views/' });
 });
 
 app.get('/', isUserSignedIn, function (req, res) {
-  res.sendFile('index.html', { root: __dirname + '/views/' });
+  //res.sendFile('index.html', { root: __dirname + '/views/' });
 });
 
 app.get('/login', isUserSignedIn, function (req, res) {
-  res.sendFile('index.html', { root: __dirname + '/views/' });
+  //res.sendFile('index.html', { root: __dirname + '/views/' });
 });

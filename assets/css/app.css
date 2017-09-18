@@ -15,7 +15,9 @@ body.login {
 body a {
   text-decoration: none;
 }
-
+body .heart {
+  margin: 10px;
+}
 #body .main-container {
   position: absolute;
   top: 0;
@@ -23,12 +25,11 @@ body a {
   right: 0;
   left: 0;
   overflow: hidden;
-  margin: 10px 0 0 10px
 }
 
 div.images-container {
-  max-width: 1060px;
-  max-height: 480px;
+  max-width: 660px;
+  max-height: 200px;
   overflow: auto;
   background: lightblue;
   border: 2px solid lightgray;
@@ -37,25 +38,43 @@ div.images-container {
 }
 
 header {
+  background: rgba(0, 0, 0, 0.85);
   height: 70px;
   padding: 10px 0 0 0;
+  display: flex;
+  color: white;
+}
+header .logo {
+  width: 150px;
+  margin-left: 10px;
+}
+header .logo img {
+  width: 50px;
+}
+header .logo span {
+  bottom: 15px;
+  position: relative;
 }
 
 div.images-container img {
-  width: 480px;
-  border: 10px lightyellow solid;
+  width: 280px;
+  border: 5px lightyellow solid;
   margin: 10px;
   border-radius: 5px;
 }
 
-label#file-upload {
+body .button {
   cursor: pointer;
   border: lightgray 1px solid;
   padding: 7px;
   background: lightblue;
   border-radius: 3px;
+  color: rgb(26, 25, 24);
 }
 
+label#file-upload {
+  display: inline-block;
+}
 label#file-upload input {
   display: none;
 }
@@ -172,24 +191,50 @@ footer {
   }
 }
 
-.profile {
-  position: relative;
-  left: 60.5%;
-  border: 1px solid lightgray;
-  border-radius: 2px;
+.user-profile {
+  margin-left: 60%;
   padding: 5px;
-  background: lightblue;
+}
+.user-profile img {
+  border-radius: 50%;
+  cursor: pointer;
+}
+.user-profile .content {
+  display: none;
+  flex-direction: column;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.5);
+  border-radius: 2px;
+  position: relative;
+  left: 0;
+  z-index: 2;
+  background-color: white;
+  color: #577390;
+  padding: 20px;
+}
+.user-profile.show .content {
+  display: flex;
+}
+.user-profile.show .content::after {
+  top: -10px;
+  content: '';
+  position: absolute;
+  height: 0;
+  width: 0;
+  border: 10px solid transparent;
+  border-bottom-color: white;
+  border-top: 0;
 }
 #user-items {
-  max-height: 400px;
+  max-height: 200px;
   display: flex;
+  flex-direction: column;
 }
 #user-items .item {
   margin-right: 10px;
 }
 #user-items .item img {
   border: 5px lightyellow solid;
-  width: 200px;
+  width: 300px;
   height: auto;
 }
 
@@ -198,6 +243,8 @@ footer {
   height: 22px;
   border-radius: 3px;
   width: 150px;
+  margin: 5px 0 0 5px;
+  position: absolute;
   display: none;
 }
 #upload-progress .progress-bar-inner {
@@ -212,7 +259,35 @@ footer {
   display: inline-block;
 }
 .h3 {
-  width: 120px;
-  display: inline-block;
   margin: 10px 0;
+}
+#notification {
+  position: absolute;
+  top: 23px;
+  width: 100%;
+  padding: 5px;
+  background: orange;
+  display: none;
+  text-align: center;
+  color: white;
+}
+#notification .message {
+  width: 95%;
+}
+#notification.error {
+  background: #E73737;
+}
+#notification.warning {
+  background: #F5AC2F;
+}
+#notification.success {
+  background: #319C31;
+}
+#notification.show {
+  display: flex;
+}
+#notification .close {
+  cursor: pointer;
+  margin-left: 5px;
+  padding: 2px 10px;
 }
