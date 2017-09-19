@@ -8,6 +8,10 @@ body#body {
   margin: 0;
   font-family: sans-serif;
 }
+body ul li {
+  list-style: none;
+  margin-bottom: 2px;
+}
 
 body.login {
   background: lightgray;  
@@ -17,6 +21,25 @@ body a {
 }
 body .heart {
   margin: 10px;
+  display: flex;
+}
+body .heart .right {
+  padding: 32px 0 0 30px;
+}
+
+body .heart .right .try-things {
+  margin: 10px 0;
+  border: 1px solid lightgray;
+  background: #F77E4E;
+  border-radius: 3px;
+  padding: 10px;
+  min-height: 380px;
+}
+
+body .heart .right .try-things li {
+  font-size: 20px;
+  cursor: pointer;
+  margin-bottom: 10px;
 }
 #body .main-container {
   position: absolute;
@@ -225,6 +248,7 @@ footer {
   border-top: 0;
 }
 #user-items {
+  min-height: 50px;
   max-height: 200px;
   display: flex;
   flex-direction: column;
@@ -290,4 +314,61 @@ footer {
   cursor: pointer;
   margin-left: 5px;
   padding: 2px 10px;
+}
+.modal-overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+	position: fixed;
+	font-family: Arial, Helvetica, sans-serif;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background: rgba(0, 0, 0, 0.6);
+	z-index: 99999;
+	opacity:0;
+	transition: opacity 200ms ease-in;
+	pointer-events: none;
+}
+.modal-overlay.show {
+	opacity:1;
+	pointer-events: auto;
+}
+.modal-overlay .modal {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+	position: relative;
+	margin: 10% auto;
+	padding: 20px;
+	border-radius: 10px;
+	background: white;
+}
+
+.close {
+	background: #606061;
+	color: #FFFFFF;
+	line-height: 25px;
+	position: absolute;
+	right: -12px;
+	text-align: center;
+	top: -10px;
+	width: 24px;
+	font-weight: bold;
+	border-radius: 12px;
+	box-shadow: 1px 1px 3px #000;
+}
+
+.close:hover { 
+  background: lightblue
+}
+.recipe-ingredients {
+  font-family: cursive;
+}
+.recipe-ingredients img {
+    width: 300px;
+    position: absolute;
+    left: 200px;
+    border-radius: 50%;
 }

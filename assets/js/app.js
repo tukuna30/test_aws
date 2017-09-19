@@ -128,4 +128,11 @@
   document.querySelector('.user-profile img').addEventListener('click', function (event) {
     document.querySelector('.user-profile').classList.toggle('show');
   });
+
+  document.querySelector('.things li#recipes').addEventListener('click', function (event) {
+    document.querySelector('.modal-overlay').classList.add('show');
+  });
+  document.querySelector('.modal-overlay .close').addEventListener('click', function(event){
+    document.querySelector('.modal-overlay').classList.remove('show');
+  })
 })();
