@@ -14,16 +14,17 @@ function viewContainerData(containerName, bucketName) {
       var items = data.Contents.reduce(function(result, item) {
         if (item.Key !== containerItemKey) { 
           item.itemUrl = bucketUrl + encodeURIComponent(item.Key);
+          result.totalSize = (result.totalSize ? result.totalSize : 0 ) + item.Size;
           result.push(item);
         } 
         return result;
       }, []);
-      resolve(items);
+      resolve({data: {containerId: containerName, containerSize: items.totalSize ? items.totalSize : 0, items: items}, type: 'success'});
     });
   });
 }
 
-viewContainerData('hello', 'test-bucket-tukuna').then((items) => {
+viewContainerData('Shahnawaz%20Ahmed_10214022191252853', 'test-bucket-tukuna').then((items) => {
   console.log(items);
 })
   .catch((reason) => {

@@ -1,17 +1,20 @@
 const dynamoDb = require('../database/dynamo');
 const tableName = 'Users';
 let User = {};
+let constructProfile = function(profile) {
+    return {
+        "id": profile.id,
+        "provider": profile.provider,
+        "name": profile.name,
+        "displayName": profile.name.givenName + ' ' + profile.name.familyName,
+        "email": profile.emails ? profile.emails[0].value : "NA",
+        "photoUrl": profile.photos ? profile.photos[0].value : "NA"
+    };
+}
 let createUser = function (profile) {
     let params = {
         TableName: tableName,
-        Item: {
-            "id": profile.id,
-            "provider": profile.provider,
-            "name": profile.name,
-            "displayName": profile.name.givenName + ' ' + profile.name.familyName,
-            "email": profile.emails ? profile.emails[0].value : "NA",
-            "photoUrl": profile.photos ? profile.photos[0].value : "NA"
-        }
+        Item: constructProfile(profile)
     }
     return dynamoDb.apis.insertRecord(params);
 };
@@ -27,7 +30,7 @@ User.findOrCreate = function (userProfile) {
                 console.log('Storing a user ');
                 createUser(userProfile).then(function (data) {
                     console.log('User data from db ' + JSON.stringify(data));
-                    resolve(userProfile);
+                    resolve(constructProfile(userProfile));
                 });
                 return;
             }
@@ -38,7 +41,7 @@ User.findOrCreate = function (userProfile) {
             createUser(userProfile).then(function (data) {
                 //TODO:- dynamo is not returning the record which is added, a read required? :(
                 console.log('User data from db ' + data);
-                resolve(userProfile);
+                resolve(constructProfile(userProfile));
             });
         });
 

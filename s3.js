@@ -104,7 +104,7 @@ function viewContainerData(containerName, bucketName) {
         } 
         return result;
       }, []);
-      resolve({data: {containerId: containerName, containerSize: items.totalSize, items: items}, type: 'success'});
+      resolve({data: {containerId: containerName, containerSize: items.totalSize ? items.totalSize : 0, items: items}, type: 'success'});
     });
   }
   );
