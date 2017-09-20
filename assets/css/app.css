@@ -1,12 +1,13 @@
 body#body {
-  background: #f7eef9; 
+  background: #ffffff; 
+  color: #111111;
   position: absolute;
   top: 0;
   bottom: 0;
   right: 0;
   left: 0;
   margin: 0;
-  font-family: sans-serif;
+  font-family: verdana,arial,helvetica,sans-serif;
 }
 body ul li {
   list-style: none;
@@ -28,20 +29,29 @@ body .heart .right {
 }
 
 body .heart .right .try-things {
-  margin: 10px 0;
-  border: 1px solid lightgray;
-  background: #532f5a;
+  margin: 0;
+  padding: 0;
   border-radius: 3px;
-  padding: 10px;
-  min-height: 560px;
   color: white;
+}
+body .heart .right .things div.message {
+  margin-top: 20px;
 }
 
 body .heart .right .try-things li {
-  font-size: 20px;
-  cursor: pointer;
+  font-size: 16px;
   margin-bottom: 10px;
+} 
+body .heart .right .try-things li span {
+  color: #004B91;
+  cursor: pointer;
+  border-bottom: 1px solid #004B91;
 }
+body .heart .right .try-things li span:hover {
+  color: #E47911;
+  border-bottom: 1px solid #E47911;  
+}
+
 #body .main-container {
   position: absolute;
   top: 0;
@@ -55,14 +65,13 @@ div.images-container {
   max-width: 660px;
   max-height: 200px;
   overflow: auto;
-  background: #836a88;
   border: 2px solid lightgray;
   border-radius: 5px;
   padding: 25px;
 }
 
 header {
-  background: #42184a;
+  background: #482c4d;
   height: 50px;
   display: flex;
   color: white;
@@ -90,9 +99,9 @@ body .button {
   cursor: pointer;
   border: lightgray 1px solid;
   padding: 7px;
-  background: #368252;
+  background: #f4d078;
   border-radius: 3px;
-  color: rgb(26, 25, 24);
+  color: #111111;
 }
 
 label#file-upload {
@@ -231,20 +240,21 @@ footer {
   position: relative;
   left: 0;
   z-index: 2;
-  background: #5d4a5f;
+  background: white;
+  color: #111111;
   padding: 20px;
 }
-.user-profile.show .content {
+.user-profile:hover .content {
   display: flex;
 }
-.user-profile.show .content::after {
+.user-profile:hover .content::after {
   top: -10px;
   content: '';
   position: absolute;
   height: 0;
   width: 0;
   border: 10px solid transparent;
-  border-bottom-color: #5d4a5f;
+  border-bottom-color: white;
   border-top: 0;
 }
 #user-items {
@@ -284,16 +294,18 @@ footer {
 }
 .h3 {
   margin: 10px 0;
+  color: #E47911;
 }
 #notification {
   position: absolute;
-  top: 23px;
+  top: 10px;
   width: 100%;
-  padding: 5px;
+  padding: 6px;
   background: orange;
   display: none;
   text-align: center;
   color: white;
+  min-height: 15px;
 }
 #notification .message {
   width: 95%;
@@ -313,7 +325,13 @@ footer {
 #notification .close {
   cursor: pointer;
   margin-left: 5px;
-  padding: 2px 10px;
+  padding: 5px 8px;
+  position: absolute;
+  right: 20px;
+  top: 0px;
+  border-radius: 50px;
+  line-height: normal;
+  width: auto;
 }
 .modal-overlay {
   display: flex;
@@ -383,16 +401,16 @@ footer {
   transform: translate3d(0,0,0) rotate3d(0,0,0,0);    
 }
 .tooltip-content {
-  color: white;
 	position: absolute;
   padding: 5px 10px;
 	border-radius: 3px;
-	background: #5d4a5f;
+	background: white;
 	opacity: 0;
 	cursor: default;
   pointer-events: none;
   top: 40px;
   white-space: nowrap;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.5);
 }
 .tooltip-content::after {
   top: -20px;
@@ -403,6 +421,6 @@ footer {
 	width: 0;
 	position: absolute;
 	pointer-events: none;
-	border-bottom-color: #5d4a5f;
+	border-bottom-color: white;
 	border-width: 10px;
 }
