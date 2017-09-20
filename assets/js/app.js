@@ -134,5 +134,5 @@
   });
   document.querySelector('.modal-overlay .close').addEventListener('click', function(event){
     document.querySelector('.modal-overlay').classList.remove('show');
-  })
+  });
 })();

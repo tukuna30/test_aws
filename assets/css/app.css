@@ -1,5 +1,5 @@
 body#body {
-  /* background: #BE7DE8; */
+  background: #f7eef9; 
   position: absolute;
   top: 0;
   bottom: 0;
@@ -30,10 +30,11 @@ body .heart .right {
 body .heart .right .try-things {
   margin: 10px 0;
   border: 1px solid lightgray;
-  background: #F77E4E;
+  background: #532f5a;
   border-radius: 3px;
   padding: 10px;
-  min-height: 380px;
+  min-height: 560px;
+  color: white;
 }
 
 body .heart .right .try-things li {
@@ -54,16 +55,15 @@ div.images-container {
   max-width: 660px;
   max-height: 200px;
   overflow: auto;
-  background: lightblue;
+  background: #836a88;
   border: 2px solid lightgray;
   border-radius: 5px;
   padding: 25px;
 }
 
 header {
-  background: rgba(0, 0, 0, 0.85);
-  height: 70px;
-  padding: 10px 0 0 0;
+  background: #42184a;
+  height: 50px;
   display: flex;
   color: white;
 }
@@ -72,7 +72,7 @@ header .logo {
   margin-left: 10px;
 }
 header .logo img {
-  width: 50px;
+  width: 40px;
 }
 header .logo span {
   bottom: 15px;
@@ -90,7 +90,7 @@ body .button {
   cursor: pointer;
   border: lightgray 1px solid;
   padding: 7px;
-  background: lightblue;
+  background: #368252;
   border-radius: 3px;
   color: rgb(26, 25, 24);
 }
@@ -215,10 +215,11 @@ footer {
 }
 
 .user-profile {
-  margin-left: 60%;
+  margin-left: 53%;
   padding: 5px;
 }
 .user-profile img {
+  width: 40px;
   border-radius: 50%;
   cursor: pointer;
 }
@@ -230,8 +231,7 @@ footer {
   position: relative;
   left: 0;
   z-index: 2;
-  background-color: white;
-  color: #577390;
+  background: #5d4a5f;
   padding: 20px;
 }
 .user-profile.show .content {
@@ -244,7 +244,7 @@ footer {
   height: 0;
   width: 0;
   border: 10px solid transparent;
-  border-bottom-color: white;
+  border-bottom-color: #5d4a5f;
   border-top: 0;
 }
 #user-items {
@@ -299,7 +299,7 @@ footer {
   width: 95%;
 }
 #notification.error {
-  background: #E73737;
+  background: #EE5656;
 }
 #notification.warning {
   background: #F5AC2F;
@@ -347,6 +347,7 @@ footer {
 }
 
 .close {
+  cursor: pointer;
 	background: #606061;
 	color: #FFFFFF;
 	line-height: 25px;
@@ -361,7 +362,7 @@ footer {
 }
 
 .close:hover { 
-  background: lightblue
+  background: #532f5a;
 }
 .recipe-ingredients {
   font-family: cursive;
@@ -371,4 +372,37 @@ footer {
     position: absolute;
     left: 200px;
     border-radius: 50%;
+}
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+.tooltip:hover .tooltip-content {
+  pointer-events: auto;
+	opacity: 1;
+  transform: translate3d(0,0,0) rotate3d(0,0,0,0);    
+}
+.tooltip-content {
+  color: white;
+	position: absolute;
+  padding: 5px 10px;
+	border-radius: 3px;
+	background: #5d4a5f;
+	opacity: 0;
+	cursor: default;
+  pointer-events: none;
+  top: 40px;
+  white-space: nowrap;
+}
+.tooltip-content::after {
+  top: -20px;
+  left: 20px;
+	content: '';
+	border: solid transparent;
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+	border-bottom-color: #5d4a5f;
+	border-width: 10px;
 }
