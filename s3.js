@@ -89,10 +89,10 @@ function viewContainerData(containerName, bucketName) {
   var containerItemKey = encodeURIComponent(containerName) + '/';
   return new Promise((resolve, reject) => {
     s3.listObjects({ Prefix: containerItemKey }, function (err, data) {
-      if (err) {
+      if (err || !data) {
         console.log('There was an error viewing your container: ' + err.message);
         reject({data: err, type: 'error'});
-      }
+      } 
       // `this` references the AWS.Response instance that represents the response
       var href = this.request.httpRequest.endpoint.href;
       var bucketUrl = href + bucketName + '/';

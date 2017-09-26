@@ -37,17 +37,22 @@ body .heart .right .try-things {
 body .heart .right .things div.message {
   margin-top: 20px;
 }
+body .heart .left {
+  width: 60%;
+}
 
 body .heart .right .try-things li {
   font-size: 16px;
   margin-bottom: 10px;
 } 
-body .heart .right .try-things li span {
+body .heart .right .try-things li span, 
+body .heart li state  {
   color: #004B91;
   cursor: pointer;
   border-bottom: 1px solid #004B91;
 }
-body .heart .right .try-things li span:hover {
+body .heart .right .try-things li span:hover, 
+body .heart li state:hover  {
   color: #E47911;
   border-bottom: 1px solid #E47911;  
 }
@@ -224,7 +229,7 @@ footer {
 }
 
 .user-profile {
-  margin-left: 53%;
+  margin-left: 50%;
   padding: 5px;
 }
 .user-profile img {
@@ -423,4 +428,10 @@ footer {
 	pointer-events: none;
 	border-bottom-color: white;
 	border-width: 10px;
+}
+.html-container {
+  display: flex;
+}
+#state-view {
+  margin-right: 20%;
 }

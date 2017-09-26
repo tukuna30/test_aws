@@ -52,7 +52,7 @@
           let uploadStatus = JSON.parse(req.response);
           document.querySelector('#upload-progress.progress-bar-outer').classList.remove('show');
           document.getElementById("upload-input").disabled = false;
-          if(uploadStatus.type === 'error') {
+          if (uploadStatus.type === 'error') {
             showNotification(uploadStatus.data, 'error');
           }
           if (uploadStatus.Location) {
@@ -110,7 +110,7 @@
   //   userSpace = document.getElementById('user-space-input').value;
   //   if (userSpace) {
   //     var req = new XMLHttpRequest();
-  //     req.open("POST", "APP_BASE_URL" + "/createUserSpace");
+  //     req.open("POST", "http://localhost:3000" + "/createUserSpace");
   //     const formData = new FormData();
   //     formData.append("userSpaceName", userSpace);
   //     req.send(formData);
@@ -128,7 +128,9 @@
   document.querySelector('.things li#recipes span').addEventListener('click', function (event) {
     document.querySelector('.modal-overlay').classList.add('show');
   });
-  document.querySelector('.modal-overlay .close').addEventListener('click', function(event){
+  document.querySelector('.modal-overlay .close').addEventListener('click', function (event) {
     document.querySelector('.modal-overlay').classList.remove('show');
   });
+  
+  window.trythings.Router.configure({appBaseUrl: "APP_BASE_URL"}).init(); 
 })();

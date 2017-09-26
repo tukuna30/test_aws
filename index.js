@@ -316,3 +316,15 @@ app.get('/', isUserSignedIn, function (req, res) {
 app.get('/login', isUserSignedIn, function (req, res) {
   //res.sendFile('index.html', { root: __dirname + '/views/' });
 });
+app.get('/about', isUserSignedIn, function (req, res) {
+  //res.redirect('/');
+});
+app.get('/books/', isUserSignedIn, function (req, res) {
+  //res.redirect('/');
+});
+app.get('/activities', isUserSignedIn, function (req, res) {
+  //res.redirect('/');
+});
+app.get('/recipes', isUserSignedIn, function (req, res) {
+  //res.redirect('/');
+});

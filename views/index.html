@@ -54,6 +54,10 @@
           <div class="progress-bar-inner"></div>
         </div>
         <h3 class='h3'>Your photos</h3>
+        <div class='html-container'>
+          <div id="state-view" class=""></div>
+          <div id="child-state-view" class=""></div>
+        </div>
         <div id="user-items" class="images-container"></div>
         <h3 class='h3'>Photos available</h3>
         <div class="images-container">
@@ -72,9 +76,18 @@
             <li id='recipes'>
               <span>Recipes</span>
             </li>
+            <!-- <li id='activities'>
+              <state name="activities" url="/activities" templateUrl="assets/views/activities.html">Activities</state>
+            </li> -->
+            <li>
+              <state name="books" url="/books" templateUrl="assets/views/books.html">Books</state>
+            </li>
+            <li>
+              <state name="about" url="/about">About</state>
+            </li>
           </ul>
           <div class='message'>More things coming soon...</div>
-          
+
           <div class="modal-overlay">
             <div class='modal'>
               <span class="close">X</span>
@@ -124,11 +137,16 @@
       </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socketcluster-client/7.0.1/socketcluster.js"></script>
+    <script src="/assets/js/router.js"></script>
     <script async src="/assets/js/app.js"></script>
+
+    <script async src="/assets/views/books.js"></script>
+    <script async src="/assets/views/about.js"></script>
+
     <footer id="footer">All rights not reserved yet ;)</footer>
     <script type="application/javascript">
       (function (window) {
-        window.trythings = {};
+        window.trythings = window.trythings || {};
         __INJECT_GLOBAL_HERE__
       })(window);
     </script>
