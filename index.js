@@ -63,6 +63,7 @@ app.use(passport.session());
 //CORS Config
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "http://ec2-13-126-178-201.ap-south-1.compute.amazonaws.com");
+  res.header("Access-Control-Allow-Origin", "http://ec2-13-126-178-201.ap-south-1.compute.amazonaws.com:3000");  
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   res.header("Access-Control-Allow-Credentials", true);
   next();
