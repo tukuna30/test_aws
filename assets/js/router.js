@@ -106,7 +106,6 @@
             return new Promise((resolve, reject) => {
                 let xhr = new XMLHttpRequest();
                 xhr.open("GET", this.appBaseUrl + "/" + templateUrl + '?time=' + Date.now());
-                xhr.withCredentials = true;
                 xhr.send({});
                 xhr.addEventListener("load", function reqListener() {
                     if (xhr.readyState === xhr.DONE) {
