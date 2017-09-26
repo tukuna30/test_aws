@@ -53,13 +53,6 @@ let passport = require('passport'),
   GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 let sessionStore = new session.MemoryStore;
 
-app.use(bodyParser.json({ limit: '100mb' }));
-app.use(fileUpload());
-app.use('/assets', express.static(path.join(__dirname, 'assets')));
-app.use(session({ store: sessionStore, secret: 'testawssessionkey', key: 'express.sid' }));
-app.use(passport.initialize());
-app.use(passport.session());
-
 //CORS Config
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "http://ec2-13-126-178-201.ap-south-1.compute.amazonaws.com");
@@ -67,6 +60,13 @@ app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Credentials", true);
   next();
 });
+
+app.use(bodyParser.json({ limit: '100mb' }));
+app.use(fileUpload());
+app.use('/assets', express.static(path.join(__dirname, 'assets')));
+app.use(session({ store: sessionStore, secret: 'testawssessionkey', key: 'express.sid' }));
+app.use(passport.initialize());
+app.use(passport.session());
 
 http.listen(appConfig.PORT, () => console.log('Server running on port ' + appConfig.PORT));
 
