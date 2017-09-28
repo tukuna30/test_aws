@@ -319,12 +319,6 @@ app.get('/login', isUserSignedIn, function (req, res) {
 app.get('/about', isUserSignedIn, function (req, res) {
   //res.redirect('/');
 });
-app.get('/books/', isUserSignedIn, function (req, res) {
-  //res.redirect('/');
-});
-app.get('/activities', isUserSignedIn, function (req, res) {
-  //res.redirect('/');
-});
-app.get('/recipes', isUserSignedIn, function (req, res) {
+app.get('/books(\/:bookId)', isUserSignedIn, function (req, res) {
   //res.redirect('/');
 });

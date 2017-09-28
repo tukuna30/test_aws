@@ -8,7 +8,7 @@
             return this;
         },
         init: function() {
-            this.registerStates().updateView();
+            this.registerStates().updateView(true);
         },
         getFragment: function () {
             var fragment = '';
@@ -34,6 +34,11 @@
             this.states = [];
             this.root = '/';
             return this;
+        },
+        findStateWithName: function(stateName) {
+           return this.states.find(function (item, i) {
+                return item.name.match(stateName);
+            });
         },
         registerStates: function () {
             let that = this;
@@ -74,17 +79,13 @@
                         }
                     }
                     else {
-                        let currentState = that.states.find(function (item, i) {
-                            return item.name.match(pathName);
-                        }) || {};
+                        let currentState = that.findStateWithName(pathName) || {};
                         output = { name: currentState.name, stateParams: stateParams, templateUrl: currentState.templateUrl };
                     }
                 }
             });
             if (!keys) {
-                let currentState = this.states.find(function (item, i) {
-                    return item.name.match(pathName);
-                });
+                let currentState = this.findStateWithName(pathName);
                 if (!currentState) {
                     console.log('state not found');
                     return {};
@@ -111,6 +112,8 @@
                     if (xhr.readyState === xhr.DONE) {
                         if (xhr.status === 200) {
                             resolve(xhr.response);
+                        } else {
+                            reject('Not found');
                         }
                     };
                 });
@@ -124,10 +127,48 @@
                 "}, 1000);" +
                 "})(window);"
         },
-        updateView: function (state) {
+        updateView: function (isPageReload) {
             let that = this;
-            state = state || this.getStateWithParams();
-            if (state) {
+            state = this.getStateWithParams();
+            if (isPageReload) {
+                let path = this.getFragment();
+                if (path.indexOf('/') == -1) {
+                    state = this.findStateWithName(path);
+                }
+                else {
+                    let fragments = path.split('/'), parent = fragments[0], child = fragments[1];
+                    state = this.findStateWithName(parent);
+                
+                    if (state.name || state.templateUrl) {
+                        this.getTemplate(state.templateUrl || state.name).then(function (templateContent) {
+                            //check for child state and append to child-view
+                            if (state.child) {
+                                document.getElementById('child-state-view').innerHTML = templateContent;
+                            } else {
+                                document.getElementById('state-view').innerHTML = templateContent;
+                                document.getElementById('child-state-view').innerHTML = '';
+                            }
+                            window.trythings[state.name] && window.trythings[state.name]();
+                            that.registerStates();
+                            let childState = that.findStateWithName(child);
+                            let emptyMessage = document.createElement('h4');
+                            emptyMessage.append(document.createTextNode('Not found'));
+                            
+                            if (childState.name || childState.templateUrl) {
+                                that.getTemplate(childState.templateUrl || childState.name).then(function (templateContent) {
+                                    document.getElementById('child-state-view').innerHTML = templateContent;
+                                }, function(error) {
+                                    document.getElementById('child-state-view').append(emptyMessage);
+                                });
+                            } 
+                        });
+                        
+                    }
+
+                }
+            }
+
+            if (state.name || state.templateUrl) {
                 this.getTemplate(state.templateUrl || state.name).then(function (templateContent) {
                     //check for child state and append to child-view
                     if (state.child) {
@@ -138,6 +179,16 @@
                     }
                     window.trythings[state.name] && window.trythings[state.name]();
                     that.registerStates();
+                }, function(error) {
+                    let emptyMessage = document.createElement('h4');
+                    emptyMessage.append(document.createTextNode('Not found'));
+                    if (state.child) {
+                        document.getElementById('child-state-view').innerHTML = '';                        
+                        document.getElementById('child-state-view').append(emptyMessage);
+                    } else {
+                        document.getElementById('state-view').append(emptyMessage);
+                        document.getElementById('child-state-view').innerHTML = '';
+                    }
                 });
                 //eval(document.getElementById(state.template).text);
                 //document.getElementById(state.template).outerHTML='';
