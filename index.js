@@ -8,8 +8,8 @@ const fs = require('fs');
 const cookie = require('cookie');
 let socketConnectionStore = [];
 let options = {
-  key: fs.readFileSync('./server.key'),
-  cert: fs.readFileSync('./server.crt')
+  key: fs.readFileSync((process.env.HOME || process.env.USERPROFILE) + '/.ssh/privkey.pem'),
+  cert: fs.readFileSync((process.env.HOME || process.env.USERPROFILE) + '/.ssh/fullchain.pem')
 };
 let https = require('https').createServer(options, app);
 let User = require('./models/user').User;
