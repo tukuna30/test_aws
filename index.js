@@ -28,14 +28,14 @@ fs.readFile(file, 'utf8', function (err, data) {
     });
   }
 });
-const file = './assets/js/guest.js';
-fs.readFile(file, 'utf8', function (err, data) {
+const guest = './assets/js/guest.js';
+fs.readFile(guest, 'utf8', function (err, data) {
   if (err) {
     return console.error('Unable to open file: ', error);
   }
   if (data.indexOf('APP_BASE_URL') !== -1) {
     var result = data.replace(/APP_BASE_URL/g, appConfig.baseUrl);
-    fs.writeFile(file, result, 'utf8', function (err) {
+    fs.writeFile(guest, result, 'utf8', function (err) {
       if (err) {
         console.log('file write failed ' + err);
       }
