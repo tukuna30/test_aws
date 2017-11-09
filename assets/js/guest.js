@@ -34,6 +34,6 @@
       document.querySelector('.modal-overlay').classList.remove('show');
     });
     
-    window.trythings.Router.configure({appBaseUrl: "http://localhost:8443"}).init(); 
+    window.trythings.Router.configure({appBaseUrl: "APP_BASE_URL"}).init(); 
   })();
   

@@ -7,10 +7,28 @@ const appConfig = require('./config/app_config').appConfig;
 const fs = require('fs');
 const cookie = require('cookie');
 let socketConnectionStore = [];
-let http = require('http').Server(app);
+let options = {
+  key: fs.readFileSync('./server.key'),
+  cert: fs.readFileSync('./server.crt')
+};
+let https = require('https').createServer(options, app);
 let User = require('./models/user').User;
 
 const file = './assets/js/app.js';
+fs.readFile(file, 'utf8', function (err, data) {
+  if (err) {
+    return console.error('Unable to open file: ', error);
+  }
+  if (data.indexOf('APP_BASE_URL') !== -1) {
+    var result = data.replace(/APP_BASE_URL/g, appConfig.baseUrl);
+    fs.writeFile(file, result, 'utf8', function (err) {
+      if (err) {
+        console.log('file write failed ' + err);
+      }
+    });
+  }
+});
+const file = './assets/js/guest.js';
 fs.readFile(file, 'utf8', function (err, data) {
   if (err) {
     return console.error('Unable to open file: ', error);
@@ -44,7 +62,7 @@ function setCurrentUser(user) {
 }
 
 let socketClusterServer = require('socketcluster-server');
-let scServer = socketClusterServer.attach(http);
+let scServer = socketClusterServer.attach(https);
 
 let bodyParser = require('body-parser');
 let passport = require('passport'),
@@ -68,7 +86,7 @@ app.use(session({ store: sessionStore, secret: 'testawssessionkey', key: 'expres
 app.use(passport.initialize());
 app.use(passport.session());
 
-http.listen(appConfig.PORT, () => console.log('Server running on port ' + appConfig.PORT));
+https.listen(appConfig.PORT, () => console.log('Server running on port ' + appConfig.PORT));
 
 //configure facebook login 
 passport.use(new FacebookStrategy({
