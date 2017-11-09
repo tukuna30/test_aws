@@ -55,7 +55,7 @@ let sessionStore = new session.MemoryStore;
 
 //CORS Config
 app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "http://ec2-13-126-178-201.ap-south-1.compute.amazonaws.com");
+  res.header("Access-Control-Allow-Origin", "https://myodisha.xyz");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   res.header("Access-Control-Allow-Credentials", true);
   next();
@@ -301,6 +301,8 @@ function isUserSignedIn(req, res, next) {
   } else {
     //next(new Error("Not signed in!"));
     //res.redirect('/');
+    console.log('user is not logged in ');
+    console.log(req.session.passport);
     res.sendFile('login.html', { root: __dirname + '/views/' });
   }
 }
