@@ -127,9 +127,14 @@ label#file-upload input {
   padding: 0 8px 0 8px;
 }
 
-#fb-button-holder {
+#fb-button-holder, #login-button {
   background-color: #4267B2;
   border: 1px solid #4267B2;
+}
+#login-button {
+  width: unset;
+  height: unset;
+  padding: 2px;
 }
 .logo {
   width: 25px;
