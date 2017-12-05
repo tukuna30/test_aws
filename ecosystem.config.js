@@ -6,8 +6,8 @@ module.exports = {
   deploy: {
     production: {
       user: 'ec2-user',
-      host: 'ec2-13-126-178-201.ap-south-1.compute.amazonaws.com',
-      key: '~/.ssh/firstEC2.pem',
+      host: 'ec2-35-154-4-46.ap-south-1.compute.amazonaws.com',
+      key: '~/.ssh/newMac.pem',
       ref: 'origin/master',
       repo: 'https://github.com/tukuna30/test_aws.git',
       path: '/home/ec2-user/test_aws',
