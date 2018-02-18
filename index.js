@@ -82,6 +82,7 @@ app.use(function (req, res, next) {
 app.use(bodyParser.json({ limit: '100mb' }));
 app.use(fileUpload());
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
+app.use('/dist', express.static(path.join(__dirname, 'dist')));
 app.use(session({ store: sessionStore, secret: 'testawssessionkey', key: 'express.sid' }));
 app.use(passport.initialize());
 app.use(passport.session());

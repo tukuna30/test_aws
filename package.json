@@ -19,19 +19,22 @@
   },
   "homepage": "https://github.com/tukuna30/test_aws#readme",
   "dependencies": {
+    "bcrypt": "^1.0.3",
     "cookie": "^0.3.1",
-    "express": "^4.15.4",
-    "express-session": "^1.15.5",
+    "express": "^4.16.2",
+    "express-session": "^1.15.6",
     "passport": "^0.4.0",
     "passport-facebook": "^2.1.1",
     "passport-google-oauth": "^1.0.0",
     "socketcluster-server": "^7.0.2"
   },
   "devDependencies": {
-    "aws-sdk": "^2.97.0",
+    "aws-sdk": "^2.188.0",
     "body-parser": "^1.17.2",
     "express-fileupload": "^0.1.4",
     "nodemon": "^1.11.0",
-    "pm2": "^2.6.1"
+    "pm2": "^2.6.1",
+    "uglifyjs-webpack-plugin": "^1.2.0",
+    "webpack": "^3.11.0"
   }
 }
