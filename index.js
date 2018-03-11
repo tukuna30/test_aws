@@ -112,7 +112,7 @@ passport.serializeUser(function (user, done) {
 });
 
 //before a socket is created get the authenticated user associated with it;
-scServer.addMiddleware(scServer.MIDDLEWARE_HANDSHAKE,
+scServer.addMiddleware(scServer.MIDDLEWARE_HANDSHAKE_WS,
   function (req, next) {
     let sessionID = cookie.parse(req.headers.cookie)['express.sid'].split('.')[0].split(':')[1];
     if (sessionID) {
