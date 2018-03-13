@@ -38,7 +38,7 @@
         findStateWithName: function(stateName) {
            return this.states.find(function (item, i) {
                 return item.name.match(stateName);
-            });
+            }) || {};
         },
         registerStates: function () {
             let that = this;

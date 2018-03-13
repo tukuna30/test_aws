@@ -93,7 +93,7 @@ https.listen(appConfig.PORT, () => console.log('Server running on port ' + appCo
 passport.use(new FacebookStrategy({
   clientID: appConfig.facebookClientId,
   clientSecret: appConfig.facebookSecret,
-  callbackURL: appConfig.baseUrlWithoutPort + "/auth/facebook/callback",
+  callbackURL: appConfig.baseUrl + "/auth/facebook/callback",
   profileFields: ['id', 'emails', 'name', 'photos']
 },
   function (accessToken, refreshToken, profile, done) {
@@ -155,7 +155,7 @@ passport.deserializeUser(function (user, done) {
 passport.use(new GoogleStrategy({
   clientID: appConfig.googleClientId,
   clientSecret: appConfig.googleSecret,
-  callbackURL: appConfig.baseUrlWithoutPort + "/auth/google/callback",
+  callbackURL: appConfig.baseUrl + "/auth/google/callback",
   profileFields: ['id', 'emails', 'name', 'photos']
 },
   function (accessToken, refreshToken, profile, done) {
