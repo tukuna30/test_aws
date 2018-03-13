@@ -14,35 +14,6 @@ let options = {
 let https = require('https').createServer(options, app);
 let User = require('./models/user').User;
 
-const file = './assets/js/app.js';
-fs.readFile(file, 'utf8', function (err, data) {
-  if (err) {
-    return console.error('Unable to open file: ', error);
-  }
-  if (data.indexOf('APP_BASE_URL') !== -1) {
-    var result = data.replace(/APP_BASE_URL/g, appConfig.baseUrl);
-    fs.writeFile(file, result, 'utf8', function (err) {
-      if (err) {
-        console.log('file write failed ' + err);
-      }
-    });
-  }
-});
-const guest = './assets/js/guest.js';
-fs.readFile(guest, 'utf8', function (err, data) {
-  if (err) {
-    return console.error('Unable to open file: ', error);
-  }
-  if (data.indexOf('APP_BASE_URL') !== -1) {
-    var result = data.replace(/APP_BASE_URL/g, appConfig.baseUrl);
-    fs.writeFile(guest, result, 'utf8', function (err) {
-      if (err) {
-        console.log('file write failed ' + err);
-      }
-    });
-  }
-});
-
 function setCurrentUser(user) {
   let pattern = '__INJECT_GLOBAL_HERE__', file = "./views/index.html";
   let userString = "window.trythings.currentUser=" + JSON.stringify(user);

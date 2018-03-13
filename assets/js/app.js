@@ -18,7 +18,7 @@
 
   function showUserData() {
     let xhr = new XMLHttpRequest();
-    xhr.open("GET", "APP_BASE_URL" + "/userData" + '?time=' + Date.now());
+    xhr.open("GET", "https://myodisha.xyz" + "/userData" + '?time=' + Date.now());
     xhr.withCredentials = true;
     xhr.send({});
     xhr.addEventListener("load", function reqListener() {
@@ -63,7 +63,7 @@
       }
     });
 
-    req.open("POST", "APP_BASE_URL" + "/upload");
+    req.open("POST", "https://myodisha.xyz" + "/upload");
     req.withCredentials = true;
 
     req.upload.onprogress = function (e) {
@@ -83,12 +83,12 @@
   }, false);
 
 
-  var socket = socketCluster.connect({ port: 3000 });
+  var socket = socketCluster.connect();
   socket.on('connect', function () {
     console.log('CONNECTED');
 
     let req = new XMLHttpRequest();
-    req.open("POST", "APP_BASE_URL" + "/createUserSpace");
+    req.open("POST", "https://myodisha.xyz" + "/createUserSpace");
     req.withCredentials = true;
     req.send({});
     setTimeout(function () {
@@ -132,5 +132,5 @@
     document.querySelector('.modal-overlay').classList.remove('show');
   });
   
-  window.trythings.Router.configure({appBaseUrl: "APP_BASE_URL"}).init(); 
+  window.trythings.Router.configure({appBaseUrl: "https://myodisha.xyz"}).init(); 
 })();
