@@ -1,3 +1,6 @@
+import Router from './router';
+import './components/game';
+
 (function () {
   function clearNotification() {
     document.querySelector('#notification').classList.remove('show');
@@ -135,5 +138,5 @@
     document.querySelector('.modal-overlay').classList.remove('show');
   });
   
-  window.trythings.Router.configure({appBaseUrl: APP_HOST_URL}).init(); 
+  Router.configure({appBaseUrl: APP_HOST_URL}).init(); 
 })();

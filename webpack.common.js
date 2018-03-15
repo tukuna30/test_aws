@@ -4,12 +4,23 @@ const path = require('path');
 
 module.exports = {
   entry: {
-     app:  './assets/js/app.js',
-     guest: './assets/js/guest.js'
+     app:  './app/js/app.js',
+     guest: './app/js/guest.js'
   },
   plugins: [],
   output: {
      filename: '[name].bundle.js',
      path: path.resolve(__dirname, 'dist')
-   }
+   },
+   module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader"
+        }
+      }
+    ]
+  }
 };

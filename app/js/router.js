@@ -1,4 +1,3 @@
-(function (window) {
     var Router = {
         states: [],
         root: '/',
@@ -128,7 +127,7 @@
                 "})(window);"
         },
         updateView: function (isPageReload) {
-            let that = this;
+            let that = this, state;
             state = this.getStateWithParams();
             if (isPageReload) {
                 let path = this.getFragment();
@@ -199,7 +198,4 @@
         console.log('onpopstate'); console.log(event);
         Router.updateView(event.state);
     }
-
-    window.trythings = window.trythings || {};
-    window.trythings.Router = Router;
-})(window);
+  export default Router;
