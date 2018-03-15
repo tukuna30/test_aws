@@ -18,7 +18,7 @@
 
   function showUserData() {
     let xhr = new XMLHttpRequest();
-    xhr.open("GET", "https://myodisha.xyz" + "/userData" + '?time=' + Date.now());
+    xhr.open("GET", APP_HOST_URL + "/userData" + '?time=' + Date.now());
     xhr.withCredentials = true;
     xhr.send({});
     xhr.addEventListener("load", function reqListener() {
@@ -63,7 +63,7 @@
       }
     });
 
-    req.open("POST", "https://myodisha.xyz" + "/upload");
+    req.open("POST", APP_HOST_URL + "/upload");
     req.withCredentials = true;
 
     req.upload.onprogress = function (e) {
@@ -82,18 +82,21 @@
     document.querySelector('#upload-progress.progress-bar-outer').classList.add('show');
   }, false);
 
-
-  var socket = socketCluster.connect();
-  socket.on('connect', function () {
-    console.log('CONNECTED');
-
+  var createUserSpace = function () {
     let req = new XMLHttpRequest();
-    req.open("POST", "https://myodisha.xyz" + "/createUserSpace");
+    req.open("POST", APP_HOST_URL + "/createUserSpace");
     req.withCredentials = true;
     req.send({});
     setTimeout(function () {
       showUserData();
     }, 5000);
+  }
+
+  createUserSpace(); 
+
+  var socket = socketCluster.connect();
+  socket.on('connect', function () {
+    console.log('CONNECTED');
   });
   socket.on('fileUploadProgress', (data) => {
     let progress = Math.floor(data) + '%';
@@ -132,5 +135,5 @@
     document.querySelector('.modal-overlay').classList.remove('show');
   });
   
-  window.trythings.Router.configure({appBaseUrl: "https://myodisha.xyz"}).init(); 
+  window.trythings.Router.configure({appBaseUrl: APP_HOST_URL}).init(); 
 })();

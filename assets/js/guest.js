@@ -34,6 +34,6 @@
       document.querySelector('.modal-overlay').classList.remove('show');
     });
     
-    window.trythings.Router.configure({appBaseUrl: "https://myodisha.xyz"}).init(); 
+    window.trythings.Router.configure({appBaseUrl: APP_HOST_URL}).init(); 
   })();
   
