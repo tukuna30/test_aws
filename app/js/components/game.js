@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 //Simple functional Component
 function Square(props) {
   return (
-    <button className={"square " + this.props.value ? 'clicked' : ''} onClick={props.onClick}>
+    <button className={"square " + (props.value ? "clicked" : '')} onClick={props.onClick}>
       {props.value}
     </button>
   );
