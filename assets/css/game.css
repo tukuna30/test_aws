@@ -27,9 +27,12 @@
     width: 34px;
     cursor: pointer;
   }
-  
+
   .square.clicked {
     cursor: not-allowed;
+  }
+  .square.won {
+    background: lightgreen;
   }
   
   .square:focus {

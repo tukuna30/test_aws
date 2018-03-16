@@ -11,7 +11,7 @@ module.exports = {
       ref: 'origin/master',
       repo: 'https://github.com/tukuna30/test_aws.git',
       path: '/home/ec2-user/test_aws',
-      'post-deploy': 'npm install && pm2 startOrRestart ecosystem.config.js'
+      'post-deploy': 'npm install && npm run build-prod && pm2 startOrRestart ecosystem.config.js'
     }
   }
 }

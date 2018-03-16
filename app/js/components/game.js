@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 //Simple functional Component
 function Square(props) {
   return (
-    <button className={"square " + (props.value ? "clicked" : '')} onClick={props.onClick}>
+    <button className={"square " + (props.value ? "clicked " : '') + (props.winingSquare ? "won" : '')} onClick={props.onClick}>
       {props.value}
     </button>
   );
@@ -24,17 +24,18 @@ function calculateWinner(squares) {
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
+      return {winner: squares[a], position: lines[i]};
     }
   }
 }
 
 class Board extends React.Component {
-  renderSquare(i) {
+  renderSquare(i, winingSquare) {
     return (
       <Square
         value={this.props.squares[i]}
         onClick={() => this.props.onClick(i)}
+        winingSquare={winingSquare}
       />
     );
   }
@@ -42,11 +43,12 @@ class Board extends React.Component {
   render() {
     const rows = [];
     const length = 3; 
-    for(let i = 0; i < length; i++) {
+    const winningPosition = this.props.winningPosition || [];
+    for (let i = 0; i < length; i++) {
       rows.push(<div className='board-row'>
         {
         Array.from(Array(length).keys()).map(j => {
-          return this.renderSquare(3*i+j);
+          return this.renderSquare(3*i+j, winningPosition.includes(3*i+j));
         })
         }
       </div>);
@@ -105,7 +107,13 @@ class Game extends React.Component {
   render() {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
-    const winner = calculateWinner(current.squares);
+    const winData = calculateWinner(current.squares);
+    let winner; 
+    let winningPosition;
+    if (winData) {
+       winner = winData.winner;
+       winningPosition = winData.position;
+    } 
 
     const moves = history.map((step, move) => {
       const desc = move ?
@@ -130,6 +138,7 @@ class Game extends React.Component {
         <div className="game-board">
           <Board
             squares={current.squares}
+            winningPosition = {winningPosition}
             onClick={i => this.handleClick(i)}
           />
         </div>
