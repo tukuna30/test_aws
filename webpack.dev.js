@@ -8,5 +8,6 @@ module.exports = merge(common, {
     new webpack.DefinePlugin({
       "APP_HOST_URL": JSON.stringify('https://localhost')
     })
-   ]
+   ],
+   watch: true
 });

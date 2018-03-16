@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 //Simple functional Component
 function Square(props) {
   return (
-    <button className="square" onClick={props.onClick}>
+    <button className={"square " + this.props.value ? 'clicked' : ''} onClick={props.onClick}>
       {props.value}
     </button>
   );
@@ -40,23 +40,21 @@ class Board extends React.Component {
   }
 
   render() {
+    const rows = [];
+    const length = 3; 
+    for(let i = 0; i < length; i++) {
+      rows.push(<div className='board-row'>
+        {
+        Array.from(Array(length).keys()).map(j => {
+          return this.renderSquare(3*i+j);
+        })
+        }
+      </div>);
+    }
+
     return (
       <div>
-        <div className="board-row">
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
-        </div>
+        {rows}
       </div>
     );
   }
@@ -68,7 +66,8 @@ class Game extends React.Component {
     this.state = {
       history: [
         {
-          squares: Array(9).fill(null)
+          squares: Array(9).fill(null),
+          position: {row: '-', col: '-'}
         }
       ],
       stepNumber: 0,
@@ -87,7 +86,8 @@ class Game extends React.Component {
     this.setState({
       history: history.concat([
         {
-          squares: squares
+          squares: squares,
+          position: {row: Math.trunc(i/3), col: i % 3}
         }
       ]),
       stepNumber: history.length,
@@ -109,7 +109,7 @@ class Game extends React.Component {
 
     const moves = history.map((step, move) => {
       const desc = move ?
-        'Go to move #' + move :
+        'Go to move #' + move  + ' (' + (step.position.row + 1) + ', ' + (+step.position.col + 1) + ')':
         'Go to game start';
       return (
         <li key={move}>
