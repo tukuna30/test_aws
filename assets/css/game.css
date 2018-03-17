@@ -51,4 +51,7 @@
   .game-info {
     margin-left: 20px;
   }
+  .game-info button.current {
+    background: lightblue;
+  }
   

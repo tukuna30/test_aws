@@ -79,7 +79,7 @@ class Game extends React.Component {
 
   handleClick(i) {
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
-    const current = history[history.length - 1];
+    const current = history[this.state.stepNumber];
     const squares = current.squares.slice();
     if (calculateWinner(squares) || squares[i]) {
       return;
@@ -108,12 +108,15 @@ class Game extends React.Component {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
     const winData = calculateWinner(current.squares);
-    let winner; 
+    let winner, matchDrawn; 
     let winningPosition;
     if (winData) {
        winner = winData.winner;
        winningPosition = winData.position;
     } 
+    else if (current.squares.indexOf(null) === -1){
+      matchDrawn = true;
+    }
 
     const moves = history.map((step, move) => {
       const desc = move ?
@@ -121,7 +124,7 @@ class Game extends React.Component {
         'Go to game start';
       return (
         <li key={move}>
-          <button onClick={() => this.jumpTo(move)}>{desc}</button>
+          <button className={this.state.stepNumber === move ? "current" : ""} onClick={() => this.jumpTo(move)}>{desc}</button>
         </li>
       );
     });
@@ -129,7 +132,11 @@ class Game extends React.Component {
     let status;
     if (winner) {
       status = "Winner: " + winner;
-    } else {
+    }
+    else if (matchDrawn) {
+      status = "Game ended in a Draw!!!"
+    } 
+    else {
       status = "Next player: " + (this.state.xIsNext ? "X" : "O");
     }
 
