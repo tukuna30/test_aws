@@ -53,5 +53,6 @@
   }
   .game-info button.current {
     background: lightblue;
+    outline: none;
   }
   
