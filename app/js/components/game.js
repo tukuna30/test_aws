@@ -78,9 +78,9 @@ class Game extends React.Component {
     };
   }
 
-  getEmptyPositions(squares) {
+  getPositionsOf(squares, element) {
     return squares.reduce(function(acc, ele, index) {
-      if (ele === null) {
+      if (ele === element) {
         acc.push(index);
       }  
       return acc;
@@ -91,13 +91,70 @@ class Game extends React.Component {
     if (!this.state.xIsNext) {
       return;
     }
+
     const current = this.state.history[this.state.stepNumber];
     const squares = current.squares.slice();
-    const emptyPositions = this.getEmptyPositions(squares);
+    const emptyPositions = this.getPositionsOf(squares, null);
 
-    let WiningPosition = emptyPositions[0];
+    let winningPosition;
+    let xPositions = this.getPositionsOf(squares, 'X');
+    let oPositions = this.getPositionsOf(squares, 'O');
 
-    this.handleClick(WiningPosition, true);
+    let _getEmptyCorner = () => {
+      let corners = [0, 2, 6, 8], emptyCorner;
+
+      corners.forEach((val, i) => {
+         if (emptyPositions.indexOf(val) !== -1) { 
+           if (i === 0 && oPositions.indexOf(8) === -1 || i === 1 && oPositions.indexOf(6) === -1 ||
+               i === 2 && oPositions.indexOf(2) === -1 || i === 3 && oPositions.indexOf(0) === -1) {
+               emptyCorner = val;
+           } 
+         }
+      });
+      return emptyCorner;
+    };
+
+    let _getBlockingPosition = () => {
+      let midPositions = [1, 3, 5, 7], blockingPosition;
+      midPositions.forEach((val, i) => {
+        if (emptyPositions.indexOf(val) !== -1) { 
+          if ((i === 0 && oPositions.indexOf(0) !== -1 && oPositions.indexOf(2) !== -1) || 
+              (i === 1 && oPositions.indexOf(0) !== -1 && oPositions.indexOf(6) !== -1) ||
+              (i === 2 && oPositions.indexOf(2) !== -1 && oPositions.indexOf(8) !== -1) || 
+              (i === 3 && oPositions.indexOf(6) !== -1 && oPositions.indexOf(8) !== -1)) {
+              blockingPosition = val;
+          }  
+        }
+     });
+     return blockingPosition;
+    };
+
+    let _getWinningPosition = () => {
+      let midPositions = [1, 3, 5, 7], winningPosition;
+      midPositions.forEach((val, i) => {
+        if (emptyPositions.indexOf(val) !== -1) { 
+          if (i === 0 && xPositions.indexOf(7) !== -1 || i === 1 && xPositions.indexOf(5) !== -1 || 
+              i === 2 && xPositions.indexOf(3) !== -1 || i === 3 && xPositions.indexOf(1) !== -1) {
+              winningPosition = val;
+          } 
+        }
+     });
+     return winningPosition;
+    };
+
+    if (_getEmptyCorner()) { //maximise winning chance of 'X'
+      winningPosition = _getEmptyCorner(); 
+    } 
+    else if (_getWinningPosition()) { // winning move
+      winningPosition = _getWinningPosition();
+    }
+    else if (_getBlockingPosition())  { //prevent 'O' to win
+      winningPosition = _getBlockingPosition();
+    } else {
+      winningPosition = emptyPositions[0];
+    }
+
+    this.handleClick(winningPosition, true);
   }
 
   handleClick(i, isComputerClick) {
@@ -134,7 +191,7 @@ class Game extends React.Component {
       xIsNext: (step % 2) === 0,
       isComputer: this.state.isComputer
     });
-    
+
     setTimeout(() => {
       this.handleComputerClick();
     }, 700);
@@ -179,7 +236,7 @@ class Game extends React.Component {
     }
 
     const moves = history.map((step, move) => {
-      if (this.getEmptyPositions(step.squares).length < 9) {
+      if (this.getPositionsOf(step.squares, null).length < 9) {
         let desc = 'Go to move #' + move  + ' (' + (step.position.row + 1) + ', ' + (+step.position.col + 1) + ')';
         return (
           <li key={move}>
