@@ -1,5 +1,5 @@
  ol, ul {
-    padding-left: 30px;
+    padding-left: 20px;
   }
   
   .board-row:after {
@@ -49,9 +49,12 @@
   }
   
   .game-info {
-    margin-left: 20px;
+    margin-left: 10px;
   }
-  .game-info button.current {
+  .game-info button {
+    cursor: pointer;
+  }
+  .game-info button.current, .game-info button.selected {
     background: lightblue;
     outline: none;
   }

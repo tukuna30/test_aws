@@ -73,15 +73,40 @@ class Game extends React.Component {
         }
       ],
       stepNumber: 0,
-      xIsNext: true
+      xIsNext: true,
+      isComputer: false
     };
   }
 
-  handleClick(i) {
+  getEmptyPositions(squares) {
+    return squares.reduce(function(acc, ele, index) {
+      if (ele === null) {
+        acc.push(index);
+      }  
+      return acc;
+    }, []);
+  }
+
+  handleComputerClick() {
+    if (!this.state.xIsNext) {
+      return;
+    }
+    const current = this.state.history[this.state.stepNumber];
+    const squares = current.squares.slice();
+    const emptyPositions = this.getEmptyPositions(squares);
+
+    let WiningPosition = emptyPositions[0];
+
+    this.handleClick(WiningPosition, true);
+  }
+
+  handleClick(i, isComputerClick) {
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = history[this.state.stepNumber];
     const squares = current.squares.slice();
-    if (calculateWinner(squares) || squares[i]) {
+
+    if (calculateWinner(squares) || squares[i] || 
+      this.state.isComputer && this.state.xIsNext && !isComputerClick) {
       return;
     }
     squares[i] = this.state.xIsNext ? "X" : "O";
@@ -95,13 +120,44 @@ class Game extends React.Component {
       stepNumber: history.length,
       xIsNext: !this.state.xIsNext
     });
+
+    if (this.state.isComputer && !this.state.xIsNext) {
+      setTimeout(() => {
+        this.handleComputerClick();
+      }, 700);
+    }
   }
 
   jumpTo(step) {
     this.setState({
       stepNumber: step,
-      xIsNext: (step % 2) === 0
+      xIsNext: (step % 2) === 0,
+      isComputer: this.state.isComputer
     });
+    
+    setTimeout(() => {
+      this.handleComputerClick();
+    }, 700);
+  }
+
+  setComputerAsPlayer () {
+    this.setState({
+      isComputer: true
+    });
+  }
+
+  resetGame() {
+    this.setState({
+      history: [
+        {
+          squares: Array(9).fill(null),
+          position: {row: '-', col: '-'}
+        }
+      ],
+      stepNumber: 0,
+      xIsNext: true,
+      isComputer: false
+    })
   }
 
   render() {
@@ -118,15 +174,19 @@ class Game extends React.Component {
       matchDrawn = true;
     }
 
+    if (this.state.isComputer) {
+      this.handleClick(4, true);
+    }
+
     const moves = history.map((step, move) => {
-      const desc = move ?
-        'Go to move #' + move  + ' (' + (step.position.row + 1) + ', ' + (+step.position.col + 1) + ')':
-        'Go to game start';
-      return (
-        <li key={move}>
-          <button className={this.state.stepNumber === move ? "current" : ""} onClick={() => this.jumpTo(move)}>{desc}</button>
-        </li>
-      );
+      if (this.getEmptyPositions(step.squares).length < 9) {
+        let desc = 'Go to move #' + move  + ' (' + (step.position.row + 1) + ', ' + (+step.position.col + 1) + ')';
+        return (
+          <li key={move}>
+            <button className={this.state.stepNumber === move ? "current" : ""} onClick={() => this.jumpTo(move)}>{desc}</button>
+          </li>
+        );
+      }        
     });
 
     let status;
@@ -150,8 +210,15 @@ class Game extends React.Component {
           />
         </div>
         <div className="game-info">
-          <div>{status}</div>
+          <div>
+            With Computer? 
+            <button style={{marginLeft: '5px'}} onClick={() => this.setComputerAsPlayer()} className={this.state.isComputer ? "selected" : ""}>Yes</button>
+          </div>
+          <div style={{marginTop: '5px'}}>{status}</div>
           <ol>{moves}</ol>
+          <div>{moves.length > 1 ?
+            <button style={{border: '1px solid red'}} onClick={() => this.resetGame()}>Reset Game </button>: ''}
+          </div>
         </div>
       </div>
     );
