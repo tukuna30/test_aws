@@ -9,5 +9,9 @@ module.exports = merge(common, {
       "APP_HOST_URL": JSON.stringify('https://localhost')
     })
    ],
-   watch: true
+   watch: true,
+   watchOptions: {
+    aggregateTimeout: 300,
+    poll: 1000
+  }
 });

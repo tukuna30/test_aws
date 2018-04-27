@@ -1,5 +1,6 @@
 import Router from './router';
 import './components/game';
+import '../../react_src/index';
 
 (function () {
     function clearNotification() {

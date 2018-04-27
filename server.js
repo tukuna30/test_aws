@@ -305,7 +305,7 @@ app.get('/', isUserSignedIn, function (req, res) {
   //res.sendFile('index.html', { root: __dirname + '/views/' });
 });
 
-app.get('/guest', function (req, res) {
+app.get('/guest/:articles*?', function (req, res) {
   res.sendFile('guest.html', { root: __dirname + '/views/' });
 });
 

@@ -53,6 +53,7 @@
   }
   .game-info button {
     cursor: pointer;
+    background: #f4d078;
   }
   .game-info button.current, .game-info button.selected {
     background: lightblue;
