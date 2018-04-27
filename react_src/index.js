@@ -22,6 +22,7 @@ render(
       <Switch>
         <Route path="/guest/articles" component={Articles} />
         <Route path="/guest/events" component={Events} />
+        <Route path="/guest" component={Articles} />
       </Switch>
     </div>
  </BrowserRouter>
