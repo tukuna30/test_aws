@@ -37,6 +37,10 @@ import '../../react_src/index';
     document.querySelector('.modal-overlay .close').addEventListener('click', function (event) {
       document.querySelector('.modal-overlay').classList.remove('show');
     });
+
+    document.querySelector('#drawer').addEventListener('click', function(event){
+      document.querySelector('.right').classList.toggle('show');
+    });
     
     Router.configure({appBaseUrl: APP_HOST_URL}).init(); 
   })();

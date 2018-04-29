@@ -606,3 +606,9 @@ footer {
 .modal-document-container .ck.ck-toolbar {
   justify-content: center;
 }
+
+#drawer {
+  display :none;
+  position: absolute;
+  right: 0;
+}

@@ -1,7 +1,31 @@
 @import 'mixins';
 
 @include phonePortrait {
-    #game {
+    #drawer {
+        display: block;
+        z-index: 1;
+    }
+    .right {
+        top: 50px;
+        left: 0;
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        background: white;
+        display: none;
+    }
+    .right.show {
+        display: block;
+    }
+    .right .modal {
+        max-height: 500px;
+        overflow: auto;
+    }
+    .right .modal .close {
+        right: 0;
+        top: 0;
+    }
+    .right .modal img {
         display: none;
     }
 }

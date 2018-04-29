@@ -261,7 +261,7 @@ class Game extends React.Component {
     return (
       <div className="game">
         <div className="game-board">
-          <div style={{fontWegiht: 'bold'}}>Let's play</div>
+          <div style={{fontWeight: 'bold', marginBottom: '10px'}}>Let's play</div>
           <Board
             squares={current.squares}
             winningPosition={winningPosition}
