@@ -1,0 +1,13 @@
+@import 'mixins';
+
+@include phonePortrait {
+    #game {
+        display: none;
+    }
+}
+
+@include tabletProtrait {
+    #game {
+        display: flex;
+    }
+}

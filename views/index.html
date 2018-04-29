@@ -9,7 +9,7 @@
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-110689843-1"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+    function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
     gtag('config', 'UA-110689843-1');
   </script>
@@ -34,7 +34,9 @@
         <img class='user-profile-image' src>
         <div class='content'>
           <span class='name'></span>
-          <span class='profile button'><a href="/logout">Log out</a></span>
+          <span class='profile button'>
+            <a href="/logout">Log out</a>
+          </span>
         </div>
       </div>
 
@@ -48,11 +50,11 @@
       <div class='left'>
         <div class='tooltip'>
           <label id='file-upload' class='button'>
-          <span>
-            <span>Upload memories</span>
-            <input type='file' id='upload-input' accept="image/jpeg,image/gif,image/tiff,image/x-png" name='imageFiles'>
-          </span>
-        </label>
+            <span>
+              <span>Upload memories</span>
+              <input type='file' id='upload-input' accept="image/jpeg,image/gif,image/tiff,image/x-png" name='imageFiles'>
+            </span>
+          </label>
           <div class='tooltip-content'>
             <span class='message'>Tried a thing? Take photos and upload here. </span>
           </div>
@@ -94,7 +96,6 @@
               <state name="about" url="/about">About</state>
             </li>
           </ul>
-          <h3>Let's play</h3>
           <div id='game'></div>
 
           <div class="modal-overlay">

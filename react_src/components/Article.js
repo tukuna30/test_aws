@@ -4,12 +4,11 @@ import DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document/build/
 class Article extends React.Component {
     constructor(props, context) {
         super(props, context);
-        this.state = {editor: undefined};
-        this.setState = this.setState.bind(this);
+        this.setEditor = this.setEditor.bind(this);
     }
 
     setEditor (editor) {
-        this.setState({editor});
+        this._editor = editor;
     }
     componentDidMount () {
         let self = this;
@@ -24,7 +23,7 @@ class Article extends React.Component {
             });
     }
     componentDidUpdate() {
-       this.state.editor.setData(this.props.article.description);
+       this._editor.setData(this.props.article.description);
     }
 
     render () {

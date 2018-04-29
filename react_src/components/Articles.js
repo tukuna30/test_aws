@@ -21,7 +21,7 @@ class Articles extends React.Component {
     }
 
     closeModal() {
-        this.setState({ modalIsOpen: false });
+        this.setState({ modalIsOpen: false, articleChanged: false });
         if (window.editor) {
             editor.destroy();
         }
