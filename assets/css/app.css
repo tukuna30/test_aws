@@ -591,6 +591,9 @@ footer {
   border: none;
   max-height: unset;
 }
+.article .document-editor .ck .ck-widget:hover, .article .document-editor .ck .ck-widget.ck-widget_selected {
+  outline: none;
+}
 
 .article .document-editor__editable-container {
   height: auto;

@@ -13,7 +13,9 @@ class Article extends React.Component {
     componentDidMount () {
         let self = this;
         let articleClass = ".article" + this.props.article.id;
-        DecoupledEditor.create(document.querySelector(articleClass + ' .document-editor .document-editor__editable' ), {})
+        DecoupledEditor.create(document.querySelector(articleClass + ' .document-editor .document-editor__editable' ), {
+            removePlugins: ['ImageCaption']
+        })
             .then(editor => {
                 editor.setData(this.props.article.description);
                 editor.isReadOnly = true;

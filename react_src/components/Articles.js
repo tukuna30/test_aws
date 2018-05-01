@@ -26,6 +26,16 @@ class Articles extends React.Component {
             editor.destroy();
         }
     }
+    insertImage () {
+        let imageSrc = prompt('Enter an image URL');
+        let editor = window.editor;
+        if (editor && imageSrc) { 
+            const content = "<img src='"+ imageSrc +"'></img>";
+            const viewFragment = editor.data.processor.toView( content );
+            const modelFragment = editor.data.toModel( viewFragment );
+            editor.model.insertContent( modelFragment, editor.model.document.selection );
+        }
+    }
     articleChanged() {
         this.setState({ articleChanged: true });
     }
@@ -42,7 +52,10 @@ class Articles extends React.Component {
             return;
         }
         let self = this;
-        DecoupledEditor.create(document.querySelector('.modal-document-container .document-editor .document-editor__editable'), {})
+        //toolbar: [ "undo", "redo", "alignment", "fontSize", "fontFamily", "highlight", "bold", "italic", "strikethrough", "underline", "blockQuote", "heading", "link", "numberedList", "bulletedList" ]
+        DecoupledEditor.create(document.querySelector('.modal-document-container .document-editor .document-editor__editable'), {
+            removePlugins: ['ImageCaption']
+        })
             .then(editor => {
                 const toolbarContainer = document.querySelector('.modal-document-container .document-editor .document-editor__toolbar');
                 toolbarContainer.appendChild(editor.ui.view.toolbar.element);
@@ -71,6 +84,7 @@ class Articles extends React.Component {
                 >
                     <div style={{ display: 'flex', flexDirection: 'row-reverse' }}>
                         <button onClick={this.closeModal} style={{fontSize: '16px', marginLeft: '10px'}} className="button">Close</button>
+                        <button onClick={this.insertImage} style={{fontSize: '16px', marginLeft: '10px'}} className="button">Insert Image</button>
                         {this.state.articleChanged && <button style={{fontSize: '16px'}} onClick={() => this.saveArticle(this.state.article.id)} className="button">Save</button>}
                     </div>
                     <div class='modal-document-container'>
