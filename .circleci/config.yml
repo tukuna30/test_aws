@@ -44,7 +44,7 @@ jobs:
     steps:
       - run:
           name: 'Execute deploy script'
-          command: ./deploy_prod.sh
+          command: ./deploy.sh
 
 workflows:
   version: 2
