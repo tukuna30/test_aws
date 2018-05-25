@@ -41,6 +41,7 @@ jobs:
   deploy:
     machine: 
       enabled: true 
+    working_directory: ~/repo
     steps:
       - run:
           name: 'Execute deploy script'
