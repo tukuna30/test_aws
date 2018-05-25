@@ -44,7 +44,7 @@ jobs:
     steps:
       - run:
           name: 'Execute deploy script'
-          command: ./deploy.sh
+          command: deploy.sh
 
 
 workflows:
@@ -53,4 +53,6 @@ workflows:
     jobs:
       - build
       - deploy
+        requires:
+          - build
 
