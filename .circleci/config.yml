@@ -41,8 +41,10 @@ jobs:
   deploy:
     machine:
         enabled: true
-        commands:
-          - ./deploy_prod.sh
+        steps:
+          - run:
+             name: 'Execute deploy script'
+             command: ./deploy_prod.sh
 
 workflows:
   version: 2
