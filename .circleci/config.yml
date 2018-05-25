@@ -38,6 +38,23 @@ jobs:
       # run tests!
       - run: npm run test 
 
+  deploy:
+    machine:
+        enabled: true
+        commands:
+          - ./deploy_prod.sh
+
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build-job
+          filters:
+            branches:
+              only: master
 
 
 
