@@ -39,6 +39,8 @@ jobs:
       - run: npm run test 
 
   deploy:
+    machine: 
+      enabled: true 
     steps:
       - run:
           name: 'Execute deploy script'
