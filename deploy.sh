@@ -1,4 +1,4 @@
-
+#!/bin/bash
 ssh ec2-user@ec2-13-126-162-20.ap-south-1.compute.amazonaws.com
 
 echo 'Getting latest changes'
