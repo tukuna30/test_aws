@@ -39,12 +39,10 @@ jobs:
       - run: npm run test 
 
   deploy:
-    machine:
-        enabled: true
-        steps:
-          - run:
-             name: 'Execute deploy script'
-             command: ./deploy_prod.sh
+    steps:
+      - run:
+          name: 'Execute deploy script'
+          command: ./deploy_prod.sh
 
 workflows:
   version: 2
