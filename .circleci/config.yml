@@ -42,11 +42,15 @@ jobs:
     machine: 
       enabled: true 
     working_directory: ~/repo
+    filters:
+      branches:
+        only: tukuna30/release-26/05/2018
+      
     steps:
       - run:
           name: 'Execute deploy script'
           command: |
-           ssh ec2-user@ec2-13-126-162-20.ap-south-1.compute.amazonaws.com "cd test_aws && git pull && git checkout tukuna30/circleCD1 && npm install && npm run build-prod && pm2 startOrRestart ecosystem.config.js --env production"
+           ssh ec2-user@ec2-13-126-162-20.ap-south-1.compute.amazonaws.com "cd test_aws && git pull && git checkout tukuna30/release-26/05/2018 && npm install && npm run build-prod && pm2 startOrRestart ecosystem.config.js --env production"
 
 workflows:
   version: 2
