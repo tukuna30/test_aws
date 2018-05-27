@@ -50,11 +50,11 @@ jobs:
 
 workflows:
   version: 2
-  build-deploy:
+  build-prs:
     jobs:
       - build
-          
-      - deploy: 
+  prod-deploy: 
+    - deploy: 
           requires:
             - build
           filters:
