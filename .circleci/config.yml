@@ -60,5 +60,5 @@ workflows:
             - build
           filters:
             branches:
-            only: /^release-26-05-2018/
+            only: master
 
