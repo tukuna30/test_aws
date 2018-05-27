@@ -55,10 +55,10 @@ workflows:
       - build
   prod-deploy: 
     jobs: 
-      - deploy: 
-          requires:
-            - build
+      - deploy:
           filters:
             branches:
-            only: master
+              only: /^release-26-05-2018/  
+          requires:
+            - build
 
