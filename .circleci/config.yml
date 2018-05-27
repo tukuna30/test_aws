@@ -61,6 +61,4 @@ workflows:
               only: /^release-26-05-2018/ 
             tags: 
               only: /^release-.*/ 
-          requires:
-            - build
 
