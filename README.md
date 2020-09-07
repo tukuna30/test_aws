@@ -10,8 +10,6 @@ The projet uses following tech stack:-
 4. 3rd party libraries:- Webpack, Socket Cluster for push notification, Facebook Login, Google Login
 
 
-Access this secure App here:-
-https://myodisha.xyz/
 
 
 To Do:-
